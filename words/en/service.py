@@ -16,6 +16,8 @@ en_service = {
 	'lewd'				: 'lewd', 
 	'angr'				: 'angry', 
 	'scar'				: 'scared',
+	'chat_on'			: 'Replier turned on.',
+	'chat_off'			: 'Replier turned off.',
 	'unban_error'		: 'Error, replier not blocked.',
 	'permission_error'	: 'Sorry, you should be admin for this.',
 	'user_status'		: 'User **%s** have status %s.',

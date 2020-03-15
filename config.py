@@ -1,4 +1,4 @@
 #take this on telegram site
-api_id      = int()
-api_hash    = str()
-hnkw_token  = str()
+api_id      = 
+api_hash    = 
+hnkw_token  = 

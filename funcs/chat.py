@@ -1,7 +1,7 @@
 from funcs.small_funcs  import check_admin, admin_send, roleplay_send, msg_del
 from words.triggers 	import triggers
-from words.words    	import reacts
-from random         	import choice
+from words.words		import reacts
+from random		 		import choice
 import re
 
 class Chat:
@@ -19,21 +19,25 @@ class Chat:
 		txt   = str(msg.text)
 		txt_l = txt.lower()
 		state = self.check_usr(msg.from_user.id)
-		hnkw  = app.get_me()
-		if (self.config['state'] and
-			'on' in state) or (
-			msg.reply_to_message and 
-			msg.reply_to_message.from_user.id == hnkw.id
-			) or (
-			hnkw.username in txt_l):
+		print(self.config['state'],  state)
 
+		def condition():
+			if self.config['state']:
+				if 'on' in state:
+					return True
+			elif msg.reply_to_message:
+				if msg.reply_to_message.from_user.id == 1056476287:
+					return True
+			elif '@hanekawa_nyanbot' in txt_l:
+				return True
+			return False
+			
+		if condition:
 			answer_set = set()
-
 			for trigger, option in triggers.items():
 				for trigger in trigger:
 					if re.search(r'\b'+trigger+r'\b', txt_l):
 						answer_set.add(option)
-
 			lang = self.config['lang']
 			mood = self.config['mood']
 
@@ -42,7 +46,6 @@ class Chat:
 					if option2 == option1:
 						reaction = choice(reaction)
 						reaction.reply(msg)
-						
 			answer_set = set()
 
 	def rp_funcs(self, app, msg, service):
