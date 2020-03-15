@@ -8,18 +8,17 @@ class Chat:
 	def __init__(self, msg):
 		self.title  = msg.chat.title
 		self.id		= msg.chat.id
-		self.config = { 'state'	 : True,
-						'mood'	 : 'nyan',
-						'lang'	 : 'ru',}
-		self.users   = {'on'  : set(),
-						'off' : set(),
-						'ban' : set()}
+		self.config = { 'state'	: True,
+						'mood'	: 'nyan',
+						'lang'	: 'ru',}
+		self.users   = {'on'  	: set(),
+						'off'	: set(),
+						'ban'	: set()}
 
 	def replaier(self, app, msg):
 		txt   = str(msg.text)
 		txt_l = txt.lower()
 		state = self.check_usr(msg.from_user.id)
-		print(self.config['state'],  state)
 
 		def condition():
 			if self.config['state']:
@@ -31,7 +30,7 @@ class Chat:
 			elif '@hanekawa_nyanbot' in txt_l:
 				return True
 			return False
-			
+
 		if condition:
 			answer_set = set()
 			for trigger, option in triggers.items():
@@ -40,7 +39,6 @@ class Chat:
 						answer_set.add(option)
 			lang = self.config['lang']
 			mood = self.config['mood']
-
 			for option1 in answer_set:
 				for option2, reaction in reacts[lang][mood].items():  
 					if option2 == option1:

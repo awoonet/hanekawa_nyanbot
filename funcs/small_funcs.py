@@ -25,7 +25,7 @@ def admin_send(app, msg, txt):
 	new_msg = msg.reply(txt)
 	msg_del(app, msg)
 	sleep(7)
-	msg_del(app, new_msg)
+	app.delete_messages(str(msg.chat.id), new_msg.message_id)
 
 def roleplay_send(app, msg, txt):
 	if msg.reply_to_message: msg.reply(txt, reply_to_message_id=msg.reply_to_message.message_id)
