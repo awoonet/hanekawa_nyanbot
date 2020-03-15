@@ -47,6 +47,6 @@ with shelve.open('nyanDB') as db:
     @app.on_message(~Filters.channel)
     @db_decorator
     def hnkw_replier(app, msg, chat, service):
-        chat.replaier(msg)                      #ответчик няшностей
+        chat.replaier(app, msg)                 #ответчик няшностей
         
     app.run()

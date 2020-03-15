@@ -1,5 +1,5 @@
 from funcs.small_funcs  import check_admin, admin_send, roleplay_send, msg_del
-from config 			import hnkw_id, hnkw_un, katsu_id
+from config 			import katsu_id
 from words.triggers 	import triggers
 from words.words    	import reacts
 from random         	import choice
@@ -16,16 +16,17 @@ class Chat:
 						'off' : set(),
 						'ban' : set()}
 
-	def replaier(self, msg):
-		txt = str(msg.text)
+	def replaier(self, app, msg):
+		txt   = str(msg.text)
 		txt_l = txt.lower()
 		state = self.check_usr(msg.from_user.id)
+		hnkw  = app.get_me()
 		if (self.config['state'] and
 			'on' in state) or (
 			msg.reply_to_message and 
-			msg.reply_to_message.from_user.id == hnkw_id
+			msg.reply_to_message.from_user.id == hnkw.id
 			) or (
-			hnkw_un in txt_l):
+			hnkw.username in txt_l):
 
 			answer_set = set()
 
@@ -85,7 +86,7 @@ class Chat:
 		if user_status == False:
 			self.users['off'].add(msg.from_user.id)
 
-		if msg.reply_to_message != None:
+		if msg.reply_to_message:
 			user_status = self.check_usr(msg.reply_to_message.from_user.id)
 			if user_status == False:
 				self.users['off'].add(msg.reply_to_message.from_user.id)			
@@ -123,8 +124,8 @@ class Chat:
 			admin_send(app, msg, answer)
 
 		elif (admin or
-			  katsu_id in uid or
-			  hnkw_id  in uid):
+			  600432868 in uid or
+			  app.get_me().id  in uid):
 
 			if re.search(r'^cond', config):
 				if re.search(r'^on', option):
