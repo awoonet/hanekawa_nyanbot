@@ -1,5 +1,4 @@
 from funcs.small_funcs  import check_admin, admin_send, roleplay_send, msg_del
-from config 			import katsu_id
 from words.triggers 	import triggers
 from words.words    	import reacts
 from random         	import choice

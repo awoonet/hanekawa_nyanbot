@@ -1,4 +1,3 @@
-#!/usr/bin/pypy3 
 from pyrogram           import Client, MessageHandler, Filters
 import shelve
 import re
@@ -6,7 +5,6 @@ from config              import api_id, api_hash
 from funcs.chat          import Chat
 from words.ru.service    import ru_service
 from words.en.service    import en_service
-
 
 with shelve.open('nyanDB') as db:
     app = Client("hanekawa_nyan", api_id, api_hash)
