@@ -1,4 +1,5 @@
 #take this on telegram site
-api_id      = 
-api_hash    = 
-bot_token   = 
+api_id      = int()
+api_hash    = str()
+#take this from BotFather
+bot_token   = str()

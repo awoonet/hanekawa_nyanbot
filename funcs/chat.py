@@ -1,4 +1,7 @@
+from pyrogram			import InlineKeyboardMarkup, InlineKeyboardButton
 from funcs.small_funcs  import check_admin, admin_send, roleplay_send, msg_del
+from words.ru.service   import ru_service
+from words.en.service   import en_service
 from words.triggers 	import triggers
 from words.words		import reacts
 from random		 		import choice
@@ -18,30 +21,20 @@ class Chat:
 	def replaier(self, app, msg):
 		txt   = str(msg.text)
 		txt_l = txt.lower()
-		state = self.check_usr(msg.from_user.id)
 
-		def condition():
-			if self.config['state']:
-				if 'on' in state:
-					return True
-			elif msg.reply_to_message:
-				if msg.reply_to_message.from_user.id == 1056476287:
-					return True
-			elif '@hanekawa_nyanbot' in txt_l:
-				return True
-			return False
+		if ((self.config['state'] and 'on' in self.check_usr(msg.from_user.id)) or
+			(msg.reply_to_message and msg.reply_to_message.from_user.id == 1056476287) or
+			'@hanekawa_nyanbot' in txt_l):
 
-		if condition:
 			answer_set = set()
 			for trigger, option in triggers.items():
 				for trigger in trigger:
 					if re.search(r'\b'+trigger+r'\b', txt_l):
 						answer_set.add(option)
-			lang = self.config['lang']
-			mood = self.config['mood']
-			for option1 in answer_set:
-				for option2, reaction in reacts[lang][mood].items():  
-					if option2 == option1:
+						
+			for option_recieved in answer_set:
+				for option_tosend, reaction in reacts[self.config['lang']][self.config['mood']].items():  
+					if option_recieved == option_tosend:
 						reaction = choice(reaction)
 						reaction.reply(msg)
 			answer_set = set()
@@ -91,73 +84,75 @@ class Chat:
 			if user_status == False:
 				self.users['off'].add(msg.reply_to_message.from_user.id)			
 	
-	def configurate(self, app, msg, service):
+	def configurate_message(self, app, msg, service):
 		"""
 		Функция предназначена для изменения настроек бота в определенном чате, администрацией или создателем бота.
 		"""
-		config = msg.command[0]
-		option = msg.command[1] if len(msg.command) > 1 else None
-		uid = msg.from_user.id
+		admin = check_admin(app, str(msg.chat.id), msg.from_user.id)
+
+		butts = {	'user'	: ['chat_stats', 'vw_user', 'ch_user'], 
+					'admin'	: ['state', 'lang', 'mood']}
+
+		buttons = [butts['admin'], butts['user']] if admin else [butts['user']]
+		kb = self.draw_kb(service, buttons)
+
+		msg.reply(service['options'], reply_markup=InlineKeyboardMarkup(kb))
+		msg_del(app, msg)
+
+	def configurate_callback(self, app, query, service):
+		msg = query.message
+		uid = query.from_user.id
 		admin = check_admin(app, str(msg.chat.id), uid)
-		
-		if re.search(r'^user', config):
-			commands = ('on', 'off', 'ban')
-			for command in commands:
-				if option in command:
-					if admin and msg.reply_to_message:
-						usr = msg.reply_to_message.from_user
-					else: 
-						usr = msg.from_user
-					txt = self.change_usr(usr, admin, command, service)
-					break
-			else:
-				txt = service['admin_user_error']
-			admin_send(app, msg, txt)
 
-		elif re.search(r'^stats', config):
-			answer = self.chat_stats(service)
-			admin_send(app, msg, answer)
-		
-		elif re.search(r'^status', config):
-			user = msg.reply_to_message.from_user if msg.reply_to_message else msg.from_user
-			answer = service['admin_user_state'].format(str(user.first_name), service[self.check_usr(user.id)])
-			admin_send(app, msg, answer)
+		if query.data:
+			if query.data == 'ch_user':		
+				kb  = self.draw_kb(service, [['uon', 'uoff', 'ban']])
+				txt = service['ch_user?']
 
-		elif (admin or
-			  600432868 in uid or
-			  app.get_me().id  in uid):
+			elif query.data == 'chat_stats':		
+				txt = self.chat_stats(service)
 
-			if re.search(r'^cond', config):
-				if re.search(r'^on', option):
-					self.config['state'] = True
-					txt = service['chat_on']
-				elif re.search(r'^off', option):
-					self.config['state'] = False
-					txt = service['chat_off']
-				
-			if re.search(r'^lang', config):
-				langs = ('ru', 'en')
-				if option in langs:
-					self.config['lang'] = option
-					txt = service['lang_change'] % option
-				else:
-					txt = service['lang_error']	
-
-			elif re.search(r'^mood', config):
-				moods = ('nyan', 'lewd', 'angr', 'scar')
-				if option in moods:
-					self.config['mood'] = option
-					txt = service['mood_change']
-				else:
-					txt = service['mood_error']
+			elif query.data == 'vw_user':
+				user = msg.reply_to_message.from_user if msg.reply_to_message else msg.from_user
+				txt = service['admin_user_state'].format(str(user.first_name), service[self.check_usr(user.id)])
 			
-			admin_send(app, msg, txt)
-		else:
-			txt = service['permission_error']
-			admin_send(app, msg, txt)
-		
+			elif query.data in ('uon', 'uoff', 'ban'):	
+				txt = self.ch_user(msg, admin, query.data.replace('u',''), service)
+
+			elif query.data in ('nyan', 'lewd', 'angr', 'scar'): 
+				self.config['mood'] = query.data
+				txt =  service['mood_change'] % service[query.data]
+
+			elif query.data in ('ru', 'en'):	
+				self.config['lang'] = query.data
+				txt = service['lang_change'] % service[query.data]
+
+			elif query.data == 'con':			
+				self.config['state'] = True
+				txt = service['chat_on']
+
+			elif query.data == 'coff':			
+				self.config['state'] = False
+				txt = service['chat_off']
+			
+			elif (admin or uid == 600432868):
+				if  query.data == 'state': 
+					kb  = self.draw_kb(service, [['con', 'coff']])
+					txt = service["set?"] % service['state'].lower()
+				elif query.data == 'lang': 
+					kb  = self.draw_kb(service, [['ru', 'en']])
+					txt = service["set?"] % service['lang'].lower()
+				elif query.data == 'mood': 
+					kb  = self.draw_kb(service, [['nyan', 'lewd', 'angr', 'scar']])
+				
+			if 'kb' in locals(): 
+				msg.edit_text(txt, reply_markup=InlineKeyboardMarkup(kb))
+			else: 
+				msg_del(app, query.message)
+				admin_send(app, msg, txt)
+
 	def chat_stats(self, service):
-		answer = f'{service["chat_stats"]}\n\n'
+		answer = f'{service["chat_stats"]}:\n\n'
 		
 		symbols = {	True : '✅',	False: '❌',
 					'ru' : '🇷🇺', 'en' : '🇺🇸',}
@@ -179,24 +174,45 @@ class Chat:
 					return name
 		return False
 	
-	def change_usr(self, usr, admin, command, service):
+	def ch_user(self, msg, admin, command, service):
 		"""
 		Перемещает пользователя в указанную БД.
 		"""
-		state = self.check_usr(usr.id)
-		if state == command:	
-			return service['same_user_cond'].format(str(usr.first_name), str(command))  
-		else:
-			if   re.search(r'^on' , state):		self.users['on' ].remove(usr.id)
-			elif re.search(r'^off', state):		self.users['off'].remove(usr.id)
-			elif re.search(r'^ban', state):
-				if admin:	self.users['ban'].remove(usr.id)
-				else:		return service['admin_rights_error']
+		commands = ('on', 'off', 'ban')
+		if command in commands:
+			if admin and msg.reply_to_message:  usr = msg.reply_to_message.from_user
+			else: 								usr = msg.from_user
 
-			if   re.search(r'^on' , command): 	self.users['on' ].add(usr.id)
-			elif re.search(r'^off', command): 	self.users['off'].add(usr.id)
-			elif re.search(r'^ban', command): 	
-				if admin:	self.users['ban'].add(usr.id)
-				else:		return service['admin_rights_error']
+			state = self.check_usr(usr.id)
+			if state == command:	
+				return service['same_user_cond'].format(str(usr.first_name), str(command))  
+			else:
+				if   re.search(r'^on' , state):		self.users['on' ].remove(usr.id)
+				elif re.search(r'^off', state):		self.users['off'].remove(usr.id)
+				elif re.search(r'^ban', state):
+					if admin:	self.users['ban'].remove(usr.id)
+					else:		return service['admin_rights_error']
 
-			return service['admin_user_state'].format(str(usr.first_name), service[command])  
+				if   re.search(r'^on' , command): 	self.users['on' ].add(usr.id)
+				elif re.search(r'^off', command): 	self.users['off'].add(usr.id)
+				elif re.search(r'^ban', command): 	
+					if admin:	self.users['ban'].add(usr.id)
+					else:		return service['admin_rights_error']
+
+				return service['admin_user_state'].format(str(usr.first_name), service[command])  
+
+	def draw_kb(self, service, rows):
+		keyboard = []
+		for somelist in rows:
+			row = []
+			for button in somelist:
+				row.append(InlineKeyboardButton(service[button], callback_data=button))
+			keyboard.append(row)
+		return keyboard
+	
+	def select_service(self):
+		service = { 'ru'	: ru_service, 
+					'en'	: en_service}
+		for x, y in service.items():
+			if self.config['lang'] in x: 
+				return y
