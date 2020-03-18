@@ -1,10 +1,10 @@
 from pyrogram			import InlineKeyboardMarkup, InlineKeyboardButton
-from funcs.small_funcs  import check_admin, admin_send, roleplay_send, msg_del
 from words.ru.service   import ru_service
 from words.en.service   import en_service
 from words.triggers 	import triggers
 from words.words		import reacts
 from random		 		import choice
+from time			    import sleep
 import re
 
 class Chat:
@@ -15,8 +15,7 @@ class Chat:
 						'mood'	: 'nyan',
 						'lang'	: 'ru',}
 		self.users   = {'on'  	: set(),
-						'off'	: set(),
-						'ban'	: set()}
+						'off'	: set()}
 
 	def replaier(self, app, msg):
 		txt   = str(msg.text)
@@ -39,7 +38,8 @@ class Chat:
 						reaction.reply(msg)
 			answer_set = set()
 
-	def rp_funcs(self, app, msg, service):
+	def rp_funcs(self, app, msg):
+		service = self.select_service()
 		def nyan_roleplay(oth_username):
 			roleplays = {	r'hug'  : service['hug'] ,
 							r'kiss' : service['kiss'],
@@ -54,11 +54,11 @@ class Chat:
 		
 		username = msg.from_user.first_name
 
-		if re.search(r'^me', msg.command[0]):
+		if re.search(r'me', msg.command[0]):
 			txt = (msg.text).replace('/me', f'**✵{username}**')
 			roleplay_send(app, msg, txt)
 
-		elif msg.reply_to_message: 
+		elif msg.reply_to_message is not None:
 			reply_username  = msg.reply_to_message.from_user.first_name
 			nyan_roleplay(reply_username)
 		else:
@@ -69,91 +69,54 @@ class Chat:
 			user = app.get_chat_member(msg.chat.id, user_id).user
 			oth_username = f'@{user.username}' if user.username else user.first_name
 			nyan_roleplay(oth_username)
-
-	def user_make(self, msg):
-		"""
-		Функция определяет eсть ли отправитель, и reply-пользователь в базе этого чата, 
-		и если нет - добавляет их в базу чата.
-		"""
-		user_status = self.check_usr(msg.from_user.id)
-		if user_status == False:
-			self.users['off'].add(msg.from_user.id)
-
-		if msg.reply_to_message:
-			user_status = self.check_usr(msg.reply_to_message.from_user.id)
-			if user_status == False:
-				self.users['off'].add(msg.reply_to_message.from_user.id)			
 	
-	def configurate_message(self, app, msg, service):
+	def configurate_message(self, app, msg):
 		"""
 		Отправляет первичную клавиатуру для настройки бота.
 		"""
-		admin = check_admin(app, str(msg.chat.id), msg.from_user.id)
+		service = self.select_service()
+		uid = msg.from_user.id
+		if check_admin(app, str(msg.chat.id), uid) or uid == 600432868:
+			buttons = [['lang', 'mood'], ['chat_stats', 'state'], ['vw_user', 'ch_user']]  
+		else: 
+			buttons = [['chat_stats'], ['vw_user'], ['ch_user']]
 
-		butts = {	'user'	: ['chat_stats', 'vw_user', 'ch_user'], 
-					'admin'	: ['state', 'lang', 'mood']}
-
-		buttons = [butts['admin'], butts['user']] if admin else [butts['user']]
-		kb = self.draw_kb(service, buttons)
-
-		msg.reply(service['options'], reply_markup=InlineKeyboardMarkup(kb))
+		kb = self.draw_kb(buttons)
+		app.send_message(msg.chat.id, service['options'], reply_markup=InlineKeyboardMarkup(kb))
 		msg_del(app, msg)
 
-	def configurate_callback(self, app, query, service):
+	def configurate_callback(self, app, query):
 		"""
 		Изменяет настройки бота в определенном чате, администрацией или создателем бота.
 		"""
+		service = self.select_service()
 		msg = query.message
 		uid = query.from_user.id
-		admin = check_admin(app, str(msg.chat.id), uid)
+		states = {	'mood' : ['nyan', 'lewd', 'angr', 'scar'],
+					'lang' : ['ru', 'en'],
+					'state': ['con', 'coff']}
+		usr_conf = ['uon', 'uoff']
+		kb, txt = None, None
+		if   query.data == 'chat_stats':	txt 					 = self.chat_stats()
+		elif query.data in usr_conf:		txt 					 = self.ch_user(query, query.data.replace('u',''))
+		elif query.data == 'vw_user':		txt 					 = service['admin_user_state'].format(str(query.from_user.first_name), service[self.check_usr(uid)])
+		elif query.data in states['mood']: 	txt, self.config['mood'] = service['mood_change'] % service[query.data], query.data
+		elif query.data in states['lang']:	txt, self.config['lang'] = service['lang_change'] % service[query.data], query.data
+		elif query.data == 'con':			txt, self.config['state']= service['chat_on'], True
+		elif query.data == 'coff':			txt, self.config['state']= service['chat_off'], False
+		elif query.data == 'ch_user':		txt, kb					 = service['ch_user?'], self.draw_kb([['uon', 'uoff']])
+		elif check_admin(app, str(msg.chat.id), uid) or uid == 600432868:
+			for x, y in states.items():
+				if query.data == x:			txt, kb 				 = service["set?"] % service[x].lower(), self.draw_kb([y])
 		
-		if query.data == 'ch_user':		
-			kb  = self.draw_kb(service, [['uon', 'uoff', 'ban']])
-			txt = service['ch_user?']
-
-		elif query.data == 'chat_stats':		
-			txt = self.chat_stats(service)
-
-		elif query.data == 'vw_user':
-			user = msg.reply_to_message.from_user if msg.reply_to_message else msg.from_user
-			txt = service['admin_user_state'].format(str(user.first_name), service[self.check_usr(user.id)])
-		
-		elif query.data in ('uon', 'uoff', 'uban'):	
-			txt = self.ch_user(msg, admin, query.data.replace('u',''), service)
-
-		elif query.data in ('nyan', 'lewd', 'angr', 'scar'): 
-			self.config['mood'] = query.data
-			txt =  service['mood_change'] % service[query.data]
-
-		elif query.data in ('ru', 'en'):	
-			self.config['lang'] = query.data
-			txt = service['lang_change'] % service[query.data]
-
-		elif query.data == 'con':			
-			self.config['state'] = True
-			txt = service['chat_on']
-
-		elif query.data == 'coff':			
-			self.config['state'] = False
-			txt = service['chat_off']
-		
-		elif (admin or uid == 600432868):
-			if  query.data == 'state': 
-				kb  = self.draw_kb(service, [['con', 'coff']])
-				txt = service["set?"] % service['state'].lower()
-			elif query.data == 'lang': 
-				kb  = self.draw_kb(service, [['ru', 'en']])
-				txt = service["set?"] % service['lang'].lower()
-			elif query.data == 'mood': 
-				kb  = self.draw_kb(service, [['nyan', 'lewd', 'angr', 'scar']])
-				
-		if 'kb' in locals(): 
+		if	  kb is not None: 
 			msg.edit_text(txt, reply_markup=InlineKeyboardMarkup(kb))
-		else: 
+		elif txt is not None: 
 			msg_del(app, query.message)	
 			admin_send(app, msg, txt)
 
-	def chat_stats(self, service):
+	def chat_stats(self):
+		service = self.select_service()
 		answer = f'{service["chat_stats"]}:\n\n'
 		
 		symbols = {	True : '✅',	False: '❌',
@@ -176,34 +139,30 @@ class Chat:
 					return name
 		return False
 	
-	def ch_user(self, msg, admin, command, service):
+	def ch_user(self, query, command):
 		"""
 		Перемещает пользователя в указанную БД.
 		"""
-		commands = ('on', 'off', 'ban')
+		service = self.select_service()
+		commands = ('on', 'off')
 		if command in commands:
-			if admin and msg.reply_to_message:  usr = msg.reply_to_message.from_user
-			else: 								usr = msg.from_user
+			usr = query.from_user
 
 			state = self.check_usr(usr.id)
 			if state == command:	
 				return service['same_user_cond'].format(str(usr.first_name), str(command))  
 			else:
-				if   re.search(r'^on' , state):		self.users['on' ].remove(usr.id)
-				elif re.search(r'^off', state):		self.users['off'].remove(usr.id)
-				elif re.search(r'^ban', state):
-					if admin:	self.users['ban'].remove(usr.id)
-					else:		return service['admin_rights_error']
-
-				if   re.search(r'^on' , command): 	self.users['on' ].add(usr.id)
-				elif re.search(r'^off', command): 	self.users['off'].add(usr.id)
-				elif re.search(r'^ban', command): 	
-					if admin:	self.users['ban'].add(usr.id)
-					else:		return service['admin_rights_error']
+				if   re.search(r'^on' , state) and re.search(r'^off', command):		
+					self.users['on' ].remove(usr.id)
+					self.users['off'].add(usr.id)
+				elif re.search(r'^off', state) and re.search(r'^on' , command):		
+					self.users['off'].remove(usr.id)
+					self.users['on' ].add(usr.id)
 
 				return service['admin_user_state'].format(str(usr.first_name), service[command])  
 
-	def draw_kb(self, service, rows):
+	def draw_kb(self, rows):
+		service = self.select_service()
 		keyboard = []
 		for somelist in rows:
 			row = []
@@ -218,3 +177,34 @@ class Chat:
 		for x, y in service.items():
 			if self.config['lang'] in x: 
 				return y
+
+def check_admin(app, chat_id, user_id):
+	user = app.get_chat_member(chat_id, user_id)
+	if (user.status == 'administrator' or 
+		user.status == 'creator'):
+		return True
+	else:
+		return False
+
+def msg_del(app, msg):
+	"""
+	Функция удаления командного сообщения, если бот имеет админ-статус.
+	"""
+	hnkw_id = 1056476287
+	hnkw 	= app.get_chat_member(str(msg.chat.id), hnkw_id)
+
+	if (hnkw.status == 'administrator' or 
+		hnkw.status == 'creator' and 
+		hnkw.can_delete_messages):
+		app.delete_messages(str(msg.chat.id), msg.message_id)
+
+def admin_send(app, msg, txt):
+	new_msg = msg.reply(txt)
+	msg_del(app, msg)
+	sleep(7)
+	app.delete_messages(str(msg.chat.id), new_msg.message_id)
+
+def roleplay_send(app, msg, txt):
+	if msg.reply_to_message: msg.reply(txt, reply_to_message_id=msg.reply_to_message.message_id)
+	else:					 msg.reply(txt, quote=False)
+	msg_del(app, msg)

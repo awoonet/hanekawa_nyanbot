@@ -14,6 +14,7 @@ en_service = {
 	"chat_stats"		: 'Chat settings',
 	'vw_user'			: 'View user conf',
 	'ch_user'			: 'Change user conf',
+	'ch_user?'			: 'What mode do you want to turn?',
 	'state'	 			: 'State',
 	'mood'	 			: 'Mood',
 	'lang'	 			: 'Language',
