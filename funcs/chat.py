@@ -86,7 +86,7 @@ class Chat:
 	
 	def configurate_message(self, app, msg, service):
 		"""
-		Функция предназначена для изменения настроек бота в определенном чате, администрацией или создателем бота.
+		Отправляет первичную клавиатуру для настройки бота.
 		"""
 		admin = check_admin(app, str(msg.chat.id), msg.from_user.id)
 
@@ -100,56 +100,58 @@ class Chat:
 		msg_del(app, msg)
 
 	def configurate_callback(self, app, query, service):
+		"""
+		Изменяет настройки бота в определенном чате, администрацией или создателем бота.
+		"""
 		msg = query.message
 		uid = query.from_user.id
 		admin = check_admin(app, str(msg.chat.id), uid)
+		
+		if query.data == 'ch_user':		
+			kb  = self.draw_kb(service, [['uon', 'uoff', 'ban']])
+			txt = service['ch_user?']
 
-		if query.data:
-			if query.data == 'ch_user':		
-				kb  = self.draw_kb(service, [['uon', 'uoff', 'ban']])
-				txt = service['ch_user?']
+		elif query.data == 'chat_stats':		
+			txt = self.chat_stats(service)
 
-			elif query.data == 'chat_stats':		
-				txt = self.chat_stats(service)
+		elif query.data == 'vw_user':
+			user = msg.reply_to_message.from_user if msg.reply_to_message else msg.from_user
+			txt = service['admin_user_state'].format(str(user.first_name), service[self.check_usr(user.id)])
+		
+		elif query.data in ('uon', 'uoff', 'uban'):	
+			txt = self.ch_user(msg, admin, query.data.replace('u',''), service)
 
-			elif query.data == 'vw_user':
-				user = msg.reply_to_message.from_user if msg.reply_to_message else msg.from_user
-				txt = service['admin_user_state'].format(str(user.first_name), service[self.check_usr(user.id)])
-			
-			elif query.data in ('uon', 'uoff', 'ban'):	
-				txt = self.ch_user(msg, admin, query.data.replace('u',''), service)
+		elif query.data in ('nyan', 'lewd', 'angr', 'scar'): 
+			self.config['mood'] = query.data
+			txt =  service['mood_change'] % service[query.data]
 
-			elif query.data in ('nyan', 'lewd', 'angr', 'scar'): 
-				self.config['mood'] = query.data
-				txt =  service['mood_change'] % service[query.data]
+		elif query.data in ('ru', 'en'):	
+			self.config['lang'] = query.data
+			txt = service['lang_change'] % service[query.data]
 
-			elif query.data in ('ru', 'en'):	
-				self.config['lang'] = query.data
-				txt = service['lang_change'] % service[query.data]
+		elif query.data == 'con':			
+			self.config['state'] = True
+			txt = service['chat_on']
 
-			elif query.data == 'con':			
-				self.config['state'] = True
-				txt = service['chat_on']
-
-			elif query.data == 'coff':			
-				self.config['state'] = False
-				txt = service['chat_off']
-			
-			elif (admin or uid == 600432868):
-				if  query.data == 'state': 
-					kb  = self.draw_kb(service, [['con', 'coff']])
-					txt = service["set?"] % service['state'].lower()
-				elif query.data == 'lang': 
-					kb  = self.draw_kb(service, [['ru', 'en']])
-					txt = service["set?"] % service['lang'].lower()
-				elif query.data == 'mood': 
-					kb  = self.draw_kb(service, [['nyan', 'lewd', 'angr', 'scar']])
+		elif query.data == 'coff':			
+			self.config['state'] = False
+			txt = service['chat_off']
+		
+		elif (admin or uid == 600432868):
+			if  query.data == 'state': 
+				kb  = self.draw_kb(service, [['con', 'coff']])
+				txt = service["set?"] % service['state'].lower()
+			elif query.data == 'lang': 
+				kb  = self.draw_kb(service, [['ru', 'en']])
+				txt = service["set?"] % service['lang'].lower()
+			elif query.data == 'mood': 
+				kb  = self.draw_kb(service, [['nyan', 'lewd', 'angr', 'scar']])
 				
-			if 'kb' in locals(): 
-				msg.edit_text(txt, reply_markup=InlineKeyboardMarkup(kb))
-			else: 
-				msg_del(app, query.message)
-				admin_send(app, msg, txt)
+		if 'kb' in locals(): 
+			msg.edit_text(txt, reply_markup=InlineKeyboardMarkup(kb))
+		else: 
+			msg_del(app, query.message)	
+			admin_send(app, msg, txt)
 
 	def chat_stats(self, service):
 		answer = f'{service["chat_stats"]}:\n\n'

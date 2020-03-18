@@ -1,5 +1,7 @@
 en_service = {
 	#admin_bot.py (настройки бота)
+	'chat_on'			: 'Replier turned on.',
+	'chat_off'			: 'Replier turned off.',
 	'lang_change'	 	: 'Language changed to %s.',
 	'lang_error'	 	: 'Error while changing language.',
 	'mood_change'	 	: 'Mood changed to %s.',
@@ -23,11 +25,9 @@ en_service = {
 	'con'				: 'On', 
 	'uoff'				: 'Off',
 	'coff'				: 'Off', 
-	'ban'				: 'Ban',
+	'uban'				: 'Ban',
 	'ru'				: '🇷🇺', 
 	'en'				: '🇬🇧',
-	'chat_on'			: 'Replier turned on.',
-	'chat_off'			: 'Replier turned off.',
 	'unban_error'		: 'Error, replier not blocked.',
 	'permission_error'	: 'Sorry, you should be admin for this.',
 	'same_user_cond'	: 'User in this mode.',
