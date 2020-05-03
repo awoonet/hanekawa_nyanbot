@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-from chat	   import Chat
-from pyrogram   import Client, MessageHandler, Filters
+from chat	   		import Chat
+from pyrogram   	import Client, MessageHandler, Filters
 #import requests
 import logging
 import shelve
@@ -9,30 +9,33 @@ import re
 app = Client("hanekawa_nyan")
 logging.basicConfig(level=logging.WARNING, format='%(name)s - %(levelname)s - %(message)s')
 
-with shelve.open('nyanDB') as db:
-	def cc(message, user):
-		chat_id  = str(message.chat.id)
-		if chat_id not in db:
-			db[chat_id] = Chat(message)
-		chat = db[chat_id]
-		if chat.check_usr(user.id) == False: chat.users['off'].add(user.id)	
-		return chat, chat_id
+rp_comms = ['me', 'pat', 'hug', 'koos', 'lick', 'jamk', 'kiss']
 
+with shelve.open('nyanDB') as db:
 	def db_decorator(my_func):
-		def wrapper(app, message):
-			if hasattr(message, 'message'): 
-				chat, chat_id = cc(message.message, message.from_user)
-			else:						   
-				chat, chat_id = cc(message, message.from_user)
+		def wrapper(app, msg):
+			def cc(msg):
+				chat_id  = str(msg.chat.id)
+				if chat_id not in db:	
+					db[chat_id] = Chat(app, msg)
+				chat	= db[chat_id]
+				uid		= msg.from_user.id
+				if chat.check_usr(uid) == False: 
+					chat.users['off'].add(uid)	
+				return chat, chat_id
+
+			try:	qmsg = msg['message']
+			except:	qmsg = msg
+
+			chat, chat_id = cc(qmsg)
 			
-			my_func(app, message, chat)
+			my_func(app, msg, chat)
 
 			db[chat_id] = chat
 			db.sync() 
-			message.continue_propagation() 
+			msg.continue_propagation() 
 		return wrapper
 
-	rp_comms = ['me','hug', 'kiss', 'koos', 'lick', 'jamk']
 	@app.on_message(~Filters.channel & Filters.command(rp_comms))
 	@db_decorator #ролеплейные возможности типа /me и /hug
 	def hnkw_roleplay(app, msg, chat): 

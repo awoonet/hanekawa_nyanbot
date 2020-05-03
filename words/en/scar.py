@@ -1,43 +1,31 @@
-from words.classes import T, S, V
+from words.classes import Sticker, Text, Other
 name = 'Ханекава'
 scar = {
-'katsu' : (
-	T("Кацу, спаси! >_<"),),
-'awoo' : (
-	T("Aв-ву... >_<"), 
-	T('Aw-wo'),
-	S('CAADAQADPQcAApEpAAEQfBRxUdnXev0WBA')),
-'mur' : (
-	T('Мр'), 
-	T(f'{name} испуганно тихо мурлыкает*')),
-'nyan' : (
-	T('Н-н-н-я...'), 
-	T(f'{name} някнула из-за дивана*')),
-'bite' : (
-	T('Помогите!'), T('Ааа, кусают!')),
-'lick' : (
-	T('Отстань, извращенец!'), 
-	T(f'{name} сжалась от страха, не в силах пошевелится*')),
-'kiss' : (
-	T('*Убегает*')),
-'lapk' : (
-	T("Ааа, не надо!*"+name+' убегает в страхе*')),
-'rawr' : (
-	T(f'{name} тихо рычит за углом*'),),
-'meh' : (
-	T('Вздыхает'),),
-'morning' : (
-	T('Ут-тра...>_<'),),
-'night' : (
-	T(f'{name} пытается тихонько выйти из комнаты*'),),
-'hello' : (
-	T('Здравствуй'),),
-'warm' : (
-	T(f'{name} открывает окно*'), 
-	T(f'{name} включает кондиционер*')),
-'cold' : (
-	T(f'{name} укутывается в пледик*'), T('Бррр!'), 
-	T(f'{name} дрожжит от холода*'), 
-	T(f'{name} включает обогреватель*')),
-'timur' : (
-	T(f'{name} прячется за занавеской* >_<'),)}
+'nyan' : (		Text	('Н-н-н-я...'), 
+				Text	('%(name)s някнула из-за дивана*'),),
+'mur' : (		Text	('Мр'), 
+				Text	('%(name)s испуганно тихо мурлыкает*'),),
+'awoo' : (		Text	("Aв-ву... >_<"), 
+				Text	('Aw-wo'),
+				Sticker	('CAADAQADPQcAApEpAAEQfBRxUdnXev0WBA'),),
+'bite' : (		Text	('Помогите!'), 
+				Text	('Ааа, кусают!'),
+				Sticker	('CAADAgADxQADrHkzBnUN64jQMLBoFgQ', 'angr'),),
+'lick' : (		Text	('Отстань, извращенец!'), 
+				Text	('%(name)s сжалась от страха, не в силах пошевелится*'),),
+'kiss' : (		Text	('*Убегает*'),),
+'lapk' : (		Text	("Ааа, не надо!*%(name)s убегает в страхе*"),),
+'rawr' : (		Text	('%(name)s тихо рычит за углом*'),),
+'meh' : (		Text	('Вздыхает'),),
+'morning' : (	Text	('Ут-тра...>_<'),),
+'night' : (		Text	('%(name)s пытается тихонько выйти из комнаты*'),),
+'hello' : (		Text	('Здравствуй'),),
+'warm' : (		Text	('%(name)s открывает окно*'), 
+				Text	('%(name)s включает кондиционер*'),),
+'cold' : (		Text	('%(name)s укутывается в пледик*'), 
+				Text	('Бррр!'), 
+				Text	('%(name)s дрожжит от холода*'), 
+				Text	('%(name)s включает обогреватель*'),),
+'timur' : (		Text	('%(name)s прячется за занавеской* >_<'),),
+'comp_p': (		Text	('<a href="https://vas3k.ru/blog/computational_photography/">Вычислительная Фотография</a>')
+)}

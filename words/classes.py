@@ -1,28 +1,19 @@
-class Reply_message:
+class Media:
 	def __init__(self, code, attr='none'):
 		self.code = code
 		self.attr = attr
-	
-class T(Reply_message):
-	def reply(self, msg):
-		msg.reply(
-						text=self.code, 
-						quote=True)
 
-class P(Reply_message):
-	def reply(self, msg):
-		msg.reply_photo(
-						photo=self.code, 
-						quote=True)
+class Sticker(Media):	
+	def reply(self, app, msg):	
+		msg.reply_sticker(		sticker 	= self.code, quote = True)
 
-class S(Reply_message):
-	def reply(self, msg):
-		msg.reply_sticker(
-						sticker=self.code, 
-						quote=True)
-		
-class V(Reply_message):
-	def reply(self, msg):
-		msg.reply_voice(
-						voice=self.code, 
-						quote=True)
+class Text(Media):
+	def reply(self, app, msg):	
+		msg.reply_text(			text 		= self.code, quote = True)
+
+class Other(Media):
+	def reply(self, app, msg):	
+		app.forward_messages(	chat_id		= msg.chat.id, 
+								from_chat_id= -1001157282357,
+								message_ids = (self.code,),
+								as_copy 	= True)

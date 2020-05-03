@@ -1,52 +1,35 @@
-from words.classes import T, S, V
+from words.classes import Sticker, Text, Other
 name = 'Ханекава'
 angr = {
-'katsu' : (
-	T("Кто взывает к Рассвету Тьмы?"),),
-'awoo' : (
-	T('Awoo'), 
-	T('Авууу!')),
-'mur' : (
-	T('*Сверлит взглядом*')),
-'nyan' : (
-	T(f'*{name}стукает ладонью по голове*', 'angr'), 
-	T('Не някай тут.', 'angr'),
-	S('CAADAQADOgcAApEpAAEQYiPbK56BYsIWBA', 'angr')),
-'bite' : (
-	T('Грызь за ногу', 'angr'), 
-	T('Грызь в шею', 'angr'),
-	S('CAADAQADPAcAApEpAAEQyoxTBUX3TsUWBA', 'angr')),
-'lick' : (
-	T('*Отвешивает оплеуху и уходит*')),
-'lapk' : (
-	T('*Перехватывает руку* Не трогай!')),
-'rawr' : (
-	T('Ррр!', 'angr'), 
-	T('Равр!', 'angr')),
-'tygydyk' : (
-	T('Тыгыдык по лицу','angr')),
-'meh' : (
-	T('Это мне надо вздыхать, потому что ты тут.')),
-'sad' : (
-	T('Тебе грустно? Это справедливо.')),
-'morning' : (
-	T('Утра, чёрт','angr'), 
-	T('Зачем приперся?','angr'), 
-	T('Иди, досыпай вечным сном','angr')),
-'night' : (
-	T('Надеюсь, ты не проснешься','angr'), 
-	T('Ты же больше не вернешься?','angr'), 
-	T('Наконец-то','angr')),
-'hello' : (
-	T('Что ты тут забыл?','angr'), 
-	T('Проваливай!','angr')),
-'warm' : (
-	T(f'*{name} включает обогреватель*','angr'), 
-	T(f'*{name} подсыпает углей в печь*','angr'), 
-	T(f'*{name} включает кондиционер на обогрев*','angr')),
-'cold' : (
-	T(f'*{name} включает кондиционер*','angr'), 
-	T(f'*{name} тыкает мороженым в щеку*','angr'), 
-	T(f'*{name} протягивает ледяной коктейль*','angr')),
-'timur' : (
-	T(f'*{name} выносит надоевший мусор*'),)}
+'nyan' 		: (	Text	('%(name)s стукает ладонью по голове*', 'angr'), 
+				Text	('Не някай тут.', 'angr'),),
+'mur' 		: (	Text	('*Сверлит взглядом*'),),
+'awoo' 		: (	Text	('Awoo *хищно улыбается*'), 
+				Text	('Авууу!'),),
+'bite' 		: (	Text	('Грызь за ногу', 'angr'), 
+				Text	('Грызь в шею', 'angr'),
+				Sticker	('CAADAQADPAcAApEpAAEQyoxTBUX3TsUWBA', 'angr'),),
+'lick' 		: (	Text	('*Отвешивает оплеуху и уходит*'),),
+'lapk' 		: (	Text	('*Перехватывает руку* Не трогай!'),),
+'rawr' 		: (	Text	('Ррр!', 'angr'), 
+				Text	('Равр!', 'angr'),),
+'meh' 		: (	Text	('Это мне надо вздыхать, потому что ты тут.'),),
+'morning' 	: (	Text	('Утра, чёрт','angr'), 
+				Text	('Зачем приперся?','angr'), 
+				Text	('Иди, досыпай вечным сном','angr'),),
+'night' 	: (	Text	('Надеюсь, ты не проснешься','angr'), 
+				Text	('Ты же больше не вернешься?','angr'), 
+				Text	('Наконец-то','angr'),),
+'hello' 	: (	Text	('Что ты тут забыл?','angr'), 
+				Text	('Проваливай!','angr'),),
+'bye'		: (	Sticker	('CAADAgADJgEAAs6YzRZ-CemTFSRlGRYE'),),
+'warm' 		: (	Text	('%(name)s включает обогреватель*','angr'), 
+				Text	('%(name)s подсыпает углей в печь*','angr'), 
+				Text	('%(name)s включает кондиционер на обогрев*','angr'),),
+'cold' 		: (	Text	('%(name)s включает кондиционер*','angr'), 
+				Text	('%(name)s тыкает мороженым в щеку*','angr'), 
+				Text	('%(name)s протягивает ледяной коктейль*','angr'),),
+'tygydyk' 	: (	Text	('Тыгыдык по лицу','angr'),),
+'timur' 	: (	Text	('%(name)s выносит надоевший мусор*'),),
+'comp_p'	: (	Text	('<a href="https://vas3k.ru/blog/computational_photography/">Вычислительная Фотография</a>')
+)}

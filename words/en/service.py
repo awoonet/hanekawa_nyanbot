@@ -33,7 +33,8 @@ en_service = {
 	'permission_error'	: 'Sorry, you should be admin for this.',
 	'same_user_cond'	: 'User in this mode.',
 	#ролеплей
-	'hug'				: 'huged',
+	'pat'				: 'pated',
+	'hug'				: 'hugged',
 	'kiss'				: 'kissed',
 	'koos'				: 'gently bited',
 	'lick'				: 'licked',

@@ -1,14 +1,16 @@
 from pyrogram			import InlineKeyboardMarkup, InlineKeyboardButton
+from words.words		import reacts, triggers
 from words.ru.service   import ru_service
 from words.en.service   import en_service
-from words.triggers 	import triggers
-from words.words		import reacts
+from small_func			import p
 from random		 		import choice
 from time			    import sleep
 import re
 
+p = p()
+
 class Chat:
-	def __init__(self, msg):
+	def __init__(self, app, msg):
 		self.title  = msg.chat.title
 		self.id		= msg.chat.id
 		self.config = { 'state'	: True,
@@ -16,47 +18,48 @@ class Chat:
 						'lang'	: 'ru',}
 		self.users   = {'on'  	: set(),
 						'off'	: set()}
+		
+		self.hnkw_id = app.get_me().id
 
 	def replaier(self, app, msg):
 		txt   = str(msg.text)
 		txt_l = txt.lower()
 
-		if ((self.config['state'] and 'on' in self.check_usr(msg.from_user.id)) or
-			(msg.reply_to_message and msg.reply_to_message.from_user.id == 1056476287) or
+		if ((self.config['state'] and msg.from_user.id in self.users['on']) or
+			(msg['reply_to_message'] and msg['reply_to_message']['from_user']['id'] == self.hnkw_id) or
 			'@hanekawa_nyanbot' in txt_l):
 
-			answer_set = set()
+			answer_set	= set()
+			reactions	= reacts[self.config['lang']][self.config['mood']]
+
 			for trigger, option in triggers.items():
 				for trigger in trigger:
 					if re.search(r'\b'+trigger+r'\b', txt_l):
 						answer_set.add(option)
 						
-			for option_recieved in answer_set:
-				for option_tosend, reaction in reacts[self.config['lang']][self.config['mood']].items():  
-					if option_recieved == option_tosend:
-						reaction = choice(reaction)
-						reaction.reply(msg)
-			answer_set = set()
+			for trigger in answer_set:
+				try:
+					reaction = choice(reactions[trigger])
+					reaction.reply(app, msg)
+				except Exception as e:
+					print(f'{e}\n{reaction} {reaction.code}')
 
 	def rp_funcs(self, app, msg):
 		service = self.select_service()
 		def nyan_roleplay(oth_username):
-			roleplays = {	r'hug'  : service['hug'] ,
-							r'kiss' : service['kiss'],
-							r'koos' : service['koos'],
-							r'lick' : service['lick'],
-							r'jamk' : service['jamk'],}
+			
+			roleplays = ('pat', 'hug', 'koos', 'lick', 'jamk', 'kiss')
 
-			for t, r in roleplays.items():
+			for t in roleplays:
 				if re.search(t , msg.command[0]):
-					txt = f'**✵{username}** {r} **{oth_username}**'
-					roleplay_send(app, msg, txt)
+					txt = f'**✵{username}** {service[t]} **{oth_username}**'
+					p.roleplay_send(app, msg, txt)
 		
 		username = msg.from_user.first_name
 
 		if re.search(r'me', msg.command[0]):
 			txt = (msg.text).replace('/me', f'**✵{username}**')
-			roleplay_send(app, msg, txt)
+			p.roleplay_send(app, msg, txt)
 
 		elif msg.reply_to_message is not None:
 			reply_username  = msg.reply_to_message.from_user.first_name
@@ -76,14 +79,14 @@ class Chat:
 		"""
 		service = self.select_service()
 		uid = msg.from_user.id
-		if check_admin(app, str(msg.chat.id), uid) or uid == 600432868:
+		if p.check_admin(app, str(msg.chat.id), uid) or uid == 600432868:
 			buttons = [['lang', 'mood'], ['chat_stats', 'state'], ['vw_user', 'ch_user']]  
 		else: 
 			buttons = [['chat_stats'], ['vw_user'], ['ch_user']]
 
 		kb = self.draw_kb(buttons)
 		app.send_message(msg.chat.id, service['options'], reply_markup=InlineKeyboardMarkup(kb))
-		msg_del(app, msg)
+		p.msg_del(app, msg)
 
 	def configurate_callback(self, app, query):
 		"""
@@ -105,15 +108,15 @@ class Chat:
 		elif query.data == 'con':			txt, self.config['state']= service['chat_on'], True
 		elif query.data == 'coff':			txt, self.config['state']= service['chat_off'], False
 		elif query.data == 'ch_user':		txt, kb					 = service['ch_user?'], self.draw_kb([['uon', 'uoff']])
-		elif check_admin(app, str(msg.chat.id), uid) or uid == 600432868:
+		elif p.check_admin(app, str(msg.chat.id), uid) or uid == 600432868:
 			for x, y in states.items():
 				if query.data == x:			txt, kb 				 = service["set?"] % service[x].lower(), self.draw_kb([y])
 		
 		if	  kb is not None: 
 			msg.edit_text(txt, reply_markup=InlineKeyboardMarkup(kb))
 		elif txt is not None: 
-			msg_del(app, query.message)	
-			admin_send(app, msg, txt)
+			p.msg_del(app, query.message)	
+			p.admin_send(app, msg, txt)
 
 	def chat_stats(self):
 		service = self.select_service()
@@ -130,8 +133,7 @@ class Chat:
 		return answer
 		
 	def check_usr(self, id):
-		"""
-		Определяет в какой из БД присутствует пользователь.
+		"""Определяет в какой из БД присутствует пользователь.
 		"""
 		for name, someset in self.users.items():
 			for someid in someset:
@@ -177,34 +179,3 @@ class Chat:
 		for x, y in service.items():
 			if self.config['lang'] in x: 
 				return y
-
-def check_admin(app, chat_id, user_id):
-	user = app.get_chat_member(chat_id, user_id)
-	if (user.status == 'administrator' or 
-		user.status == 'creator'):
-		return True
-	else:
-		return False
-
-def msg_del(app, msg):
-	"""
-	Функция удаления командного сообщения, если бот имеет админ-статус.
-	"""
-	hnkw_id = 1056476287
-	hnkw 	= app.get_chat_member(str(msg.chat.id), hnkw_id)
-
-	if (hnkw.status == 'administrator' or 
-		hnkw.status == 'creator' and 
-		hnkw.can_delete_messages):
-		app.delete_messages(str(msg.chat.id), msg.message_id)
-
-def admin_send(app, msg, txt):
-	new_msg = msg.reply(txt)
-	msg_del(app, msg)
-	sleep(7)
-	app.delete_messages(str(msg.chat.id), new_msg.message_id)
-
-def roleplay_send(app, msg, txt):
-	if msg.reply_to_message: msg.reply(txt, reply_to_message_id=msg.reply_to_message.message_id)
-	else:					 msg.reply(txt, quote=False)
-	msg_del(app, msg)
