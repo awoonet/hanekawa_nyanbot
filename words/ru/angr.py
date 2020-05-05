@@ -1,7 +1,7 @@
 from words.classes import Sticker, Text, Other
 name = 'Ханекава'
 angr = {
-'nyan' 		: (	Text	('%(name)s стукает ладонью по голове*', 'angr'), 
+'nyan' 		: (	Text	('{} стукает ладонью по голове*', 'angr'), 
 				Text	('Не някай тут.', 'angr'),),
 'mur' 		: (	Text	('*Сверлит взглядом*'),),
 'awoo' 		: (	Text	('Awoo *хищно улыбается*'), 
@@ -23,13 +23,13 @@ angr = {
 'hello' 	: (	Text	('Что ты тут забыл?','angr'), 
 				Text	('Проваливай!','angr'),),
 'bye'		: (	Sticker	('CAADAgADJgEAAs6YzRZ-CemTFSRlGRYE'),),
-'warm' 		: (	Text	('%(name)s включает обогреватель*','angr'), 
-				Text	('%(name)s подсыпает углей в печь*','angr'), 
-				Text	('%(name)s включает кондиционер на обогрев*','angr'),),
-'cold' 		: (	Text	('%(name)s включает кондиционер*','angr'), 
-				Text	('%(name)s тыкает мороженым в щеку*','angr'), 
-				Text	('%(name)s протягивает ледяной коктейль*','angr'),),
+'warm' 		: (	Text	('{} включает обогреватель*','angr'), 
+				Text	('{} подсыпает углей в печь*','angr'), 
+				Text	('{} включает кондиционер на обогрев*','angr'),),
+'cold' 		: (	Text	('{} включает кондиционер*','angr'), 
+				Text	('{} тыкает мороженым в щеку*','angr'), 
+				Text	('{} протягивает ледяной коктейль*','angr'),),
 'tygydyk' 	: (	Text	('Тыгыдык по лицу','angr'),),
-'timur' 	: (	Text	('%(name)s выносит надоевший мусор*'),),
-'comp_p'	: (	Text	('<a href="https://vas3k.ru/blog/computational_photography/">Вычислительная Фотография</a>')
-)}
+'timur' 	: (	Text	('{} выносит надоевший мусор*'),),
+'comp_p'	: (	Text	('<a href="https://vas3k.ru/blog/computational_photography/">Вычислительная Фотография</a>'),),
+}

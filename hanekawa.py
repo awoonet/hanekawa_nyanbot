@@ -2,9 +2,9 @@
 from chat	   		import Chat
 from pyrogram   	import Client, MessageHandler, Filters
 #import requests
+import traceback 
 import logging
 import shelve
-import re
 
 app = Client("hanekawa_nyan")
 logging.basicConfig(level=logging.WARNING, format='%(name)s - %(levelname)s - %(message)s')
@@ -18,19 +18,18 @@ with shelve.open('nyanDB') as db:
 				chat_id  = str(msg.chat.id)
 				if chat_id not in db:	
 					db[chat_id] = Chat(app, msg)
-				chat	= db[chat_id]
-				uid		= msg.from_user.id
-				if chat.check_usr(uid) == False: 
-					chat.users['off'].add(uid)	
+				chat	= db[chat_id]	
+				chat.init_chat(app, msg)
 				return chat, chat_id
 
 			try:	qmsg = msg['message']
 			except:	qmsg = msg
-
 			chat, chat_id = cc(qmsg)
 			
-			my_func(app, msg, chat)
-
+			try:	
+				my_func(app, msg, chat)
+			except Exception as e:
+				chat.send_error(app, msg, f'{e}\n{traceback.format_exc()}')
 			db[chat_id] = chat
 			db.sync() 
 			msg.continue_propagation() 

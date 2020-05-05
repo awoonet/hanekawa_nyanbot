@@ -5,6 +5,7 @@ from words.en.service   import en_service
 from small_func			import p
 from random		 		import choice
 from time			    import sleep
+import traceback 
 import re
 
 p = p()
@@ -18,8 +19,18 @@ class Chat:
 						'lang'	: 'ru',}
 		self.users   = {'on'  	: set(),
 						'off'	: set()}
+	
+	def init_chat(self, app, msg):
+		try:str(self.hnkw_id)
+		except:	self.hnkw_id = app.get_me().id
 		
-		self.hnkw_id = app.get_me().id
+		def qqq(uid):
+			if self.check_usr(uid) == False: 
+				self.users['off'].add(uid)
+
+		qqq(msg.from_user.id)
+		if msg['reply_to_message']:
+			qqq(msg.reply_to_message.from_user.id)
 
 	def replaier(self, app, msg):
 		txt   = str(msg.text)
@@ -28,22 +39,18 @@ class Chat:
 		if ((self.config['state'] and msg.from_user.id in self.users['on']) or
 			(msg['reply_to_message'] and msg['reply_to_message']['from_user']['id'] == self.hnkw_id) or
 			'@hanekawa_nyanbot' in txt_l):
-
-			answer_set	= set()
 			reactions	= reacts[self.config['lang']][self.config['mood']]
 
 			for trigger, option in triggers.items():
-				for trigger in trigger:
-					if re.search(r'\b'+trigger+r'\b', txt_l):
-						answer_set.add(option)
+				if re.search(r'\b'+trigger+r'\b', txt_l):
+					try:
+						reaction = choice(reactions[option])
+						reaction.reply(app, msg)
+					except Exception as e:
+						error	= f'{e}\n{traceback.format_exc()}'
+						text	= f'Trigger: {trigger}\nOption: {option}'
+						self.send_error(app, msg, error, text)
 						
-			for trigger in answer_set:
-				try:
-					reaction = choice(reactions[trigger])
-					reaction.reply(app, msg)
-				except Exception as e:
-					print(f'{e}\n{reaction} {reaction.code}')
-
 	def rp_funcs(self, app, msg):
 		service = self.select_service()
 		def nyan_roleplay(oth_username):
@@ -122,8 +129,8 @@ class Chat:
 		service = self.select_service()
 		answer = f'{service["chat_stats"]}:\n\n'
 		
-		symbols = {	True : '✅',	False: '❌',
-					'ru' : '🇷🇺', 'en' : '🇺🇸',}
+		symbols = {	True : '✅',	'ru' : '🇷🇺',
+					False: '❌', 'en' : '🇺🇸',}
 
 		for setting, state1 in self.config.items():
 			if   state1 in symbols.keys():	z = symbols[state1] 
@@ -136,14 +143,11 @@ class Chat:
 		"""Определяет в какой из БД присутствует пользователь.
 		"""
 		for name, someset in self.users.items():
-			for someid in someset:
-				if id == someid:
-					return name
+			if id in someset: return name
 		return False
 	
 	def ch_user(self, query, command):
-		"""
-		Перемещает пользователя в указанную БД.
+		"""Перемещает пользователя в указанную БД.
 		"""
 		service = self.select_service()
 		commands = ('on', 'off')
@@ -154,12 +158,14 @@ class Chat:
 			if state == command:	
 				return service['same_user_cond'].format(str(usr.first_name), str(command))  
 			else:
-				if   re.search(r'^on' , state) and re.search(r'^off', command):		
-					self.users['on' ].remove(usr.id)
-					self.users['off'].add(usr.id)
-				elif re.search(r'^off', state) and re.search(r'^on' , command):		
-					self.users['off'].remove(usr.id)
-					self.users['on' ].add(usr.id)
+				def ch_state(from_cond, to_cond):
+					if (re.search(r'^'+from_cond,   state) and 
+						re.search(r'^'+  to_cond, command)):		
+						self.users[from_cond].remove(usr.id)	
+						self.users[  to_cond].add(usr.id)
+
+				ch_state('on', 'off')
+				ch_state('off', 'on')
 
 				return service['admin_user_state'].format(str(usr.first_name), service[command])  
 
@@ -174,8 +180,22 @@ class Chat:
 		return keyboard
 	
 	def select_service(self):
-		service = { 'ru'	: ru_service, 
-					'en'	: en_service}
-		for x, y in service.items():
-			if self.config['lang'] in x: 
-				return y
+		if   self.config['lang'] == 'ru': return ru_service
+		elif self.config['lang'] == 'en': return en_service
+	
+	@staticmethod
+	def send_error(app, msg, error, txt=''):
+		c = msg.chat
+		u = msg.from_user
+		ln = u['last_name'] if u['last_name'] else ''
+		un = u['username']  if u['username']  else ''
+		app.send_message(-1001328058005,
+f"""**@hanekawa_nyanbot**
+Chat: **{c.title}**
+Chat ID: **{c.id}**
+Message ID: **{msg.message_id}**
+User: **{u.first_name} {ln} (@{un})**
+User ID: **{u.id}**\n
+{txt}\n
+Error: {error}\n
+""")

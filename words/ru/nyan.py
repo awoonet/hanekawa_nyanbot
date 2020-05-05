@@ -101,20 +101,24 @@ nyan = {
 				Sticker	('CAADBQADRwIAAunPYgjfF0mi4c26kRYE'),
 				Sticker	('CAADAgADsyUAAuCjggerF63AIh5OCRYE'),
 				Sticker	('CAADAgADpDcAAuCjggeHV6fwXeE7zxYE'),),
-'warm'		: (	Text	('%(name)s открывает окно*'), 
-				Text	('%(name)s кушает мороженое*'), 
-				Text	('%(name)s включает кондиционер*'),),
-'cold'		: (	Text	('%(name)s укутывается в пледик*'), 
+'warm'		: (	Text	('{} открывает окно*'), 
+				Text	('{} кушает мороженое*'), 
+				Text	('{} включает кондиционер*'),),
+'cold'		: (	Text	('{} укутывается в пледик*'), 
 				Text	('Бррр!'), 
-				Text	('%(name)s дрожит от холода*'), 
-				Text	('%(name)s включает обогреватель*'),),
+				Text	('{} дрожит от холода*'), 
+				Text	('{} включает обогреватель*'),),
 'sad'		: (	Text	('Не печалься, няха^^'),),
 'tygydyk'	: (	Text	('Тыгыдык!'),),
 'vivivi'	: (	Text	('Вививи'), 
-				Text	('%(name)s заводит старый жигуль*'),),
+				Text	('{} заводит старый жигуль*'),),
 'timur'		: (	Text	('Копай, бля!', 'scar'),
-				Text	('%(name)s прячется за занавеской* >_<', 'scar'),
+				Text	('{} прячется за занавеской* >_<', 'scar'),
 				Sticker	('CAADAgADWCkAAuCjggdo5gnw-q-JfRYE', 'scar'),
 				Sticker	('CAADAgADrDcAAuCjggft5Gh808VgXRYE', 'scar'),),
-'comp_p'	: (	Text	('<a href="https://vas3k.ru/blog/computational_Othergraphy/">Вычислительная Фотография</a>')
-)}
+'rufus'		: (	Text	('<a href="https://rufus.ie/">Rufus</a>'),),
+'vas3k'		: (	Text	('''
+<a href="https://vas3k.ru/blog/augmented_reality/">AR</a>
+<a href="https://vas3k.ru/blog/machine_translation/">Машинный перевод</a>
+<a href="https://vas3k.ru/blog/computational_graphy/">Вычислительная Фотография</a>'''),),
+}
