@@ -1,14 +1,11 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
-
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
 
 answers = {
 	'nyan': {
 		'ru': (	
-						Text	(lambda: f'Утр{randvoid("ечк")}а{nyah()}{face()}'),
-						Text	(lambda: 'Привет'+nyah()+face()), 
-						Text	(lambda: 'Охайо'+nyah()+face()),
+						Text	('УтрⓋечкⓋаⒶⒻ'),
+						Text	('ПриветⒶⒻ'), 
+						Text	('ОхайоⒶⒻ'),
 						Sticker	(
 											'CAADAgAD0mMAAuCjggfe1LWingZagRYE',
 											'CAADAgADkCUAAuCjggeCPV98a6NIvhYE',
@@ -26,9 +23,9 @@ answers = {
 	},
 	'lewd': {
 		'ru': (	
-						Text	(lambda: f'Утр{randvoid("ечк")}а{choice(nyah()+face(),"не устал после вчерашнего?")}'),
-						Text	(lambda: 'Привет'+nyah()+face()), 
-						Text	(lambda: 'Охайо'+nyah()+face()),
+						Text	('УтрⓋечкⓋаⒸⒶⒻ, не устал после вчерашнего?Ⓒ'),
+						Text	('ПриветⒶⒻ'), 
+						Text	('ОхайоⒶⒻ'),
 						Sticker	(
 											'CAADAgAD2AADOYhhEqPQlBGL82DmFgQ',
 											'CAADAgADAwEAAjmIYRJkhs5iEOzAahYE'
@@ -39,16 +36,16 @@ answers = {
 	},
 	'angr': {
 		'ru': (		
-						Text	(lambda: 'Утра'+tsunbaka()), 
-						Text	(lambda: 'Зачем приперся'+tsunbaka()+randvoid('!?')), 
-						Text	(lambda: 'Иди, досыпай вечным сном'),
+						Text	('УтраⒶ'), 
+						Text	('Зачем приперсяⒶⓋ!?Ⓥ'), 
+						Text	('Иди, досыпай вечным сном'),
 					),	
 		'en': (None,),
 		'ua': (None,),
 	},
 	'scar': {
 		'ru': (	
-						Text	(lambda: 'Ут-тра...>_<'),
+						Text	('Ут-тра...Ⓕ'),
 					),
 		'en': (None,),
 		'ua': (None,),

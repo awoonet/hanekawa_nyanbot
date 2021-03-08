@@ -1,13 +1,10 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
-
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
 
 answers = {
 	'nyan': {
 		'ru': (	
-						Text	(lambda: 'Кусь'+nyah()+face()),
-						Text	(lambda: 'Кусь, б-бака >_<'),
+						Text	('КусьⒶⒻ'),
+						Text	('Кусь, б-бака >_<'),
 						Sticker	('CAADAgADxQADrHkzBnUN64jQMLBoFgQ',),
 					),
 		'en': (None,),
@@ -15,16 +12,16 @@ answers = {
 	},
 	'lewd': {
 		'ru': (		
-						Text	(lambda: 'Кусь'+nyah()+face()),
-						Text	(lambda: '*Нежно кусь за ушко*'), 
-						Text	(lambda: '*'+name('а')+'ккуратно кусает шею*'),
+						Text	('КусьⒶⒻ'),
+						Text	('*Нежно кусь за ушко*'), 
+						Text	('*ⓃаⓃккуратно кусает шею*'),
 					),
 		'en': (None,),
 		'ua': (None,),
 	},
 	'angr': {
 		'ru': (		
-						Text	(lambda: 'Грызь '+choice('за ногу', 'в шею')),
+						Text	("Грызь Ⓒза ногу, в шеюⒸ"),
 						Sticker	('CAADAQADPAcAApEpAAEQyoxTBUX3TsUWBA',),
 					),
 		'en': (None,),
@@ -32,8 +29,8 @@ answers = {
 	},
 	'scar': {
 		'ru': (		
-						Text	(lambda: 'Помогите!'), 
-						Text	(lambda: 'Ааа, кусают!'),
+						Text	('Помогите!'), 
+						Text	('Ааа, кусают!'),
 						Sticker	('CAADAgADxQADrHkzBnUN64jQMLBoFgQ',),
 					),
 		'en': (None,),

@@ -1,27 +1,26 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
 
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
+rufus = 'Ⓟ<a href="https://rufus.ie/">Rufus</a>'
 
 answers = {
 	'nyan': {
-		'ru': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'en': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'ua': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
+		'ru': (Text	(rufus),),
+		'en': (Text	(rufus),),
+		'ua': (Text	(rufus),),
 	},
 	'lewd': {
-		'ru': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'en': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'ua': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
+		'ru': (Text	(rufus),),
+		'en': (Text	(rufus),),
+		'ua': (Text	(rufus),),
 	},
 	'angr': {
-		'ru': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'en': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'ua': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
+		'ru': (Text	(rufus),),
+		'en': (Text	(rufus),),
+		'ua': (Text	(rufus),),
 	},
 	'scar': {
-		'ru': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'en': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
-		'ua': (Text	(lambda: '<a href="https://rufus.ie/">Rufus</a>'),),
+		'ru': (Text	(rufus),),
+		'en': (Text	(rufus),),
+		'ua': (Text	(rufus),),
 	},
 }

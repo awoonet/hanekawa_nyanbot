@@ -1,37 +1,34 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
-
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
 
 answers = {
 	'nyan': {
 		'ru': (	
-						Text	(lambda: "Aw"+randint('o')+randvoid(" =^o^= ~")), 
-						Text	(lambda: "Ав"+randint('у')+randvoid(" =^o^= ~")), 
+						Text	('Awⓡoⓡⓥ=^o^= ~ⓥ'), 
+						Text	('Авⓡуⓡⓥ=^o^= ~ⓥ'),
 					),
 		'en': (None,),
 		'ua': (None,),
 	},
 	'lewd': {
 		'ru': (	
-						Text	(lambda: "Aw"+randint('o')+randvoid(" =^o^= ~")), 
-						Text	(lambda: "Ав"+randint('у')+randvoid(" =^o^= ~")), 
+						Text	('Awⓡoⓡⓥ=^o^= ~ⓥ'), 
+						Text	('Авⓡуⓡⓥ=^o^= ~ⓥ'),
 					),
 		'en': (None,),
 		'ua': (None,),
 	},
 	'angr': {
 		'ru': (		
-						Text	(lambda: 'Awoo *хищно улыбается*'), 
-						Text	(lambda: 'Авууу!'),
+						Text	('Awoo *ⓃхⓃищно улыбается*'), 
+						Text	('Авууу!'),
 					),	
 		'en': (None,),
 		'ua': (None,),
 	},
 	'scar': {
 		'ru': (		
-						Text	(lambda: "Aв-ву... >_<"), 
-						Text	(lambda: 'Aw-wo'),
+						Text	("Aв-ву...Ⓕ"), 
+						Text	('Aw-woⒻ'),
 						Sticker	('CAADAQADPQcAApEpAAEQfBRxUdnXev0WBA',),
 					),
 		'en': (None,),

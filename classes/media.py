@@ -1,4 +1,5 @@
 from random import choice, randint
+from classes.text import tsu
 
 class Sticker:	
 	def __init__(self, *code):
@@ -16,7 +17,7 @@ class Text:
 
 	def reply(self, app, msg, chat):
 		msg.reply_text(
-			text 	= self.code(), 
+			text 	= tsu(chat.conf['lang'], chat.conf['mood'], self.code), 
 			quote	= True)
 
 class Other:

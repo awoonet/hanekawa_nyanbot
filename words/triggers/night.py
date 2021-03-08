@@ -1,14 +1,11 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
-
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
 
 answers = {
 	'nyan': {
 		'ru': (	
-						Text	(lambda: 'Доброй ночи'+nyah()+face()), 
-						Text	(lambda: 'Приятных снов'+nyah()+face()), 
-						Text	(lambda: 'Оясуми'+randvoid('насай')+nyah()+face()),
+						Text	('Доброй ночиⒻⒶ'), 
+						Text	('Приятных сновⒻⒶ'), 
+						Text	('ОясумиⓋнасайⓋⒻⒶ'),
 						Sticker	(
 											'CAADAgADuGcAAuCjggcEK4Wuw6OReBYE',
 											'CAADAgAD5h0AAuCjggekwJfpF4blcxYE',
@@ -27,25 +24,25 @@ answers = {
 	},
 	'lewd': {
 		'ru': (
-						Text	(lambda: 'Эротических сновидений, *цем*'), 
-						Text	(lambda: 'Доброй ночи'+nyah()+face()), 
-						Text	(lambda: 'Оясуми'+randvoid('насай')+nyah()+face()),
+						Text	('Эротических сновидений, *цем*'), 
+						Text	('Доброй ночиⒻⒶ'), 
+						Text	('ОясумиⓋнасайⓋⒻⒶ'),
 					),
 		'en': (None,),
 		'ua': (None,),
 	},
 	'angr': {
 		'ru': (		
-						Text	(lambda: 'Надеюсь, ты не больше проснешься'), 
-						Text	(lambda: 'Ты же больше не вернешься?'), 
-						Text	(lambda: 'Наконец-то'),
+						Text	('Надеюсь, ты не больше проснешься'), 
+						Text	('Ты же больше не вернешься?'), 
+						Text	('Наконец-то'),
 					),	
 		'en': (None,),
 		'ua': (None,),
 	},
 	'scar': {
 		'ru': (		
-						Text	(lambda: f'*{name("п")}ытается тихонько выйти из комнаты*'),
+						Text	('*ⓃпⓃытается тихонько выйти из комнаты*'),
 					),
 		'en': (None,),
 		'ua': (None,),

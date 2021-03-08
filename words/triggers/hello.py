@@ -1,13 +1,9 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
-
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
-
 answers = {
 	'nyan': {
 		'ru': (	
-						Text	(lambda: 'Привет'+randvoid('ствую')+nyah()+face()), 
-						Text	(lambda: 'Здравствуй'+nyah()+face()),
+						Text	('ПриветⓋствуюⓋⒶⒻ'), 
+						Text	('ЗдравствуйⒶⒻ'),
 						Sticker	(
 											'CAADAgAD0mMAAuCjggfe1LWingZagRYE',
 											'CAADAgADkCUAAuCjggeCPV98a6NIvhYE',
@@ -16,8 +12,8 @@ answers = {
 										),
 					),
 		'en': (	
-						Text	(lambda: 'Привет'+randvoid('ствую')+nyah()+face()), 
-						Text	(lambda: 'Здравствуй'+nyah()+face()),
+						Text	('ПриветⓋствуюⓋⒶⒻ'), 
+						Text	('ЗдравствуйⒶⒻ'),
 						Sticker	(
 											'CAADAgAD0mMAAuCjggfe1LWingZagRYE',
 											'CAADAgADkCUAAuCjggeCPV98a6NIvhYE',
@@ -26,8 +22,8 @@ answers = {
 										),
 					),
 		'ua': (	
-						Text	(lambda: 'Привет'+randvoid('ствую')+nyah()+face()), 
-						Text	(lambda: 'Здравствуй'+nyah()+face()),
+						Text	('ПриветⓋствуюⓋⒶⒻ'), 
+						Text	('ЗдравствуйⒶⒻ'),
 						Sticker	(
 											'CAADAgAD0mMAAuCjggfe1LWingZagRYE',
 											'CAADAgADkCUAAuCjggeCPV98a6NIvhYE',
@@ -38,41 +34,41 @@ answers = {
 	},
 	'lewd': {
 		'ru': (		
-						Text	(lambda: '*'+name('п')+'риветственно целует*'),
+						Text	('*ⓃпⓃриветственно целует*'),
 						Sticker	('CAADAgADCAAD5ODJIxqwyU-ZhSOBFgQ',),
 					),
 		'en': (		
-						Text	(lambda: '*'+name('п')+'риветственно целует*'),
+						Text	('*ⓃпⓃриветственно целует*'),
 						Sticker	('CAADAgADCAAD5ODJIxqwyU-ZhSOBFgQ',),
 					),
 		'ua': (		
-						Text	(lambda: '*'+name('п')+'риветственно целует*'),
+						Text	('*ⓃпⓃриветственно целует*'),
 						Sticker	('CAADAgADCAAD5ODJIxqwyU-ZhSOBFgQ',),
 					),
 	},
 	'angr': {
 		'ru': (		
-						Text	(lambda: 'Что ты тут забыл'+g()+randvoid('!?')), 
-						Text	(lambda: 'Проваливай'+g()+randvoid('!')),
+						Text	('Что ты тут забылⒶⓋ!?Ⓥ'), 
+						Text	('ПроваливайⒶⓋ!Ⓥ'),
 					),
 		'en': (		
-						Text	(lambda: 'Что ты тут забыл'+g()+randvoid('!?')), 
-						Text	(lambda: 'Проваливай'+g()+randvoid('!')),
+						Text	('Что ты тут забылⒶⓋ!?Ⓥ'), 
+						Text	('ПроваливайⒶⓋ!Ⓥ'),
 					),
 		'ua': (		
-						Text	(lambda: 'Что ты тут забыл'+g()+randvoid('!?')), 
-						Text	(lambda: 'Проваливай'+g()+randvoid('!')),
+						Text	('Что ты тут забылⒶⓋ!?Ⓥ'), 
+						Text	('ПроваливайⒶⓋ!Ⓥ'),
 					),
 	},
 	'scar': {
 		'ru': (		
-						Text	(lambda: 'Здравствуй'),
+						Text	('Здравствуй'),
 					),
 		'en': (		
-						Text	(lambda: 'Здравствуй'),
+						Text	('Здравствуй'),
 					),
 		'ua': (		
-						Text	(lambda: 'Здравствуй'),
+						Text	('Здравствуй'),
 					),
 	},
 }

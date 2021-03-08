@@ -1,16 +1,13 @@
 from classes.media 	import Sticker, Text, Other
-from classes.text 	import Q
-
-choice, randint, randvoid, name, face, nyah, tsunbaka = Q().choice, Q().randint, Q().randvoid, Q().name, Q().face, Q().nyah, Q().tsunbaka
 
 answers = {
 	'nyan': {
 		'ru': (	
-						Text		(lambda: f'Пока{nyah()}{face()}'),
-						Text		(lambda: f'До встречи{nyah()}{face()}'),
-						Text		(lambda: f'Возвращайся{nyah()}{face()}'),
-						Text		(lambda: f'Я буду ждать{nyah()}{face()}'),
-						Text		(lambda: f'*{name("м")}ило машет рукой на прощание*'),
+						Text		('Покаⓐⓕ'),
+						Text		('До встречиⓐⓕ'),
+						Text		('Возвращайсяⓐⓕ'),
+						Text		('Я буду ждатьⓐⓕ'),
+						Text		('*ⓝмⓝило машет рукой на прощание*'),
 						Sticker	(	
 											'CAADAgAD5x0AAuCjggfUw9fjxFR09BYE',
 											'CAADBQADRwIAAunPYgjfF0mi4c26kRYE',
@@ -23,11 +20,11 @@ answers = {
 	},
 	'lewd': {
 		'ru': (
-						Text		(lambda: f'До встречи{nyah()}{face()}'),
-						Text		(lambda: f'Возвращайся{nyah()}{face()}'),
-						Text		(lambda: f'Я буду ждать{nyah()}{face()}'),
-						Text		(lambda: f'*{name("м")}ило машет рукой на прощание*'),
-						Text		(lambda: f'*{name("п")}осылает воздушный поцелуй*'),
+						Text		('До встречиⓐⓕ'),
+						Text		('Возвращайсяⓐⓕ'),
+						Text		('Я буду ждатьⓐⓕ'),
+						Text		('*ⓝмⓝило машет рукой на прощание*'),
+						Text		('*ⓝпⓝосылает воздушный поцелуй*'),
 					),
 		'en': (None,),
 		'ua': (None,),
@@ -41,7 +38,7 @@ answers = {
 	},
 	'scar': {
 		'ru': (
-						Text		(lambda: f'Пока{randvoid(">_<")}'),
+						Text		('ПокаⒻ'),
 					),
 		'en': (None,),
 		'ua': (None,),
