@@ -1,6 +1,6 @@
 from pyrogram 		import Client, filters, idle, ContinuePropagation
 from classes.chat	import Chat
-import shelve, traceback, time, dns.resolver 
+import shelve, traceback, time, dns.resolver, socket
 
 class app(Client):
 	id 				=  1056476287
@@ -20,7 +20,7 @@ class app(Client):
 		self.turn_on()
 
 		idle()
-		
+
 		self.stop()
 		self.db.close()
 
@@ -30,8 +30,10 @@ class app(Client):
 			if app.switch:
 				try:
 					chat_id = str(msg.chat.id)
+
 					if chat_id not in app.db.keys():
-						app.db[chat_id] = Chat(app, msg)
+						app.db[chat_id] = Chat(msg)
+
 					chat = app.db[chat_id]
 
 					chat.everytime(msg)
