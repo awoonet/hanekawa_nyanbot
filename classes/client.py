@@ -1,12 +1,14 @@
 from pyrogram 		import Client, filters, idle, ContinuePropagation
 from classes.chat	import Chat
-import shelve, traceback, time, dns.resolver, socket
+from classes.lib 	import turn_on
+import shelve, traceback
 
 class app(Client):
 	id 				=  1056476287
 	katsu_id	=  600432868
 	config_id	= -1001328058005
 	media_id	= -1001157282357
+
 	db_file		= 'DB/hanekawa'
 	username 	= 'hanekawa_nyanbot'
 
@@ -17,7 +19,9 @@ class app(Client):
 	def run_custom(self):
 		self.db = shelve.open(self.db_file)
 		self.start()
-		self.turn_on()
+		
+		self.bot = turn_on(self)
+		self.username = self.bot.username
 
 		idle()
 
@@ -35,7 +39,6 @@ class app(Client):
 						app.db[chat_id] = Chat(msg)
 
 					chat = app.db[chat_id]
-
 					chat.everytime(msg)
 					
 					func(app, msg, chat)
@@ -51,9 +54,11 @@ class app(Client):
 		return wrapper
 	
 	def bot_can(self, msg, action):
-		bot = self.get_chat_member(str(msg.chat.id), 1056476287)
-		if action == 'd':return True if bot.can_delete_messages  else False
-		if action == 'r':return True if bot.can_restrict_members else False
+		bot = self.get_chat_member(str(msg.chat.id), self.id)
+		if action == 'd':
+			return True if bot.can_delete_messages  else False
+		if action == 'r':
+			return True if bot.can_restrict_members else False
 		
 	def msg_del(self, msg):
 		if self.bot_can(msg, 'd'):
@@ -81,9 +86,8 @@ class app(Client):
 		elif  msg.caption is not None:	return msg.caption
 		else:														return False
 	
-	@staticmethod
-	def id_formatter(msg):
-		txt = '**Bot:** __@hanekawa_nyanbot__'
+	def id_formatter(self, msg):
+		txt = f'**Bot:** __@{self.username}__'
 		txt+= f'\n**Chat:** __{msg.chat.title}__'
 		txt+= f'\n**Chat ID:** __{msg.chat.id}__**/**__{msg.message_id}__'
 		user= msg.from_user
@@ -92,7 +96,7 @@ class app(Client):
 		txt+= f'__ (@{user.username})__'	if user.username  is not None else '' 
 		txt+= f'\n**User ID:** __{user.id}__'
 		if msg.text is not None:
-			txt+= f'\n**Text:** __{msg.text.html}__'
+			txt+= f'\n**Text:** {msg.text.html}'
 		if msg.media is not None and msg.media:
 			if msg.audio is not None:
 				txt+= f'\n**Audio ID**: __{msg.audio.file_id}__'
@@ -129,22 +133,4 @@ class app(Client):
 		for i in iterable:
 			if searching == i:
 				return i
-
-	def turn_on(self):
-		self.bot = self.get_me()
-
-		txt = f'**Turned on bot:**'
-		txt+= f'\n**User:** `{self.bot.first_name}`'
-		txt+= f'\n**Username:** `@{self.bot.username}`'
-		txt+= f'\n**User ID:** `{self.bot.id}`'
-		txt+= f'\n**Time:** `{time.strftime("%y/%m/%d %H:%M:%S", time.localtime())}`'
-		txt+= f'\n**IP:** `{self.find_ip()}`'
-
-		self.username = self.bot.username
-		self.send_message(app.config_id, txt)
-
-	@staticmethod
-	def find_ip():
-		resolver = dns.resolver.Resolver(configure=False)
-		resolver.nameservers = ["208.67.222.222", "208.67.220.220"]
-		return resolver.query('myip.opendns.com')[0]
+		return False

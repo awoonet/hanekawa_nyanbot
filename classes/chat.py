@@ -41,37 +41,75 @@ class Chat:
 
 	def replier(self, app, msg, answer):
 		txt		= app.text(msg)
+		
+		if txt:
+			chat_on = self.conf['state'] == 'on'
+			user_on = self.users[msg.from_user.id] == 'on'
 
-		if (txt and 
-				(f'@{app.username}' in txt or 
-				(self.conf['state'] == 'on' and
-				self.users[msg.from_user.id] == 'on'))):
-				
-			mood	= self.conf['mood']
-			lang	= self.conf['lang']
-
-			reaction = Media(**answer[mood][lang])
-			reaction.reply(app, msg, self)
-	
-	def change_option(self, app, msg, command):
-		user_id = msg.from_user.id
-		service = self.service
-
-		if (app.get_chat_member(msg.chat.id, user_id).status 
-				in ('administrator', 'creator') 
-				or user_id == app.katsu_id):		
-
-			if msg.command[1] in self.keys(command):
-				if msg.command[1] == self.conf[command]:
-					answer = service('same', command)
-					
+			def hanekawa_in_msg():
+				if (msg.reply_to_message is not None and 
+						msg.reply_to_message.from_user.id == app.id):
+					return True
 				else:
-					chat.conf[command] = msg.command[1]
-					answer = service('change', command)
-					answer = answer.format(service(command, msg.command[1]))
+					name = (f'@{app.username}', 'Ханекава', 'Тсубаса', 'Някава', 'Hanekawa', 'Tsubasa', 'Nyakawa')
+					for i in name:
+						if i in txt:
+							return True
+
+			if (chat_on and user_on) or hanekawa_in_msg():
+
+				mood	= self.conf['mood']
+				lang	= self.conf['lang']
+
+				reaction = Media(**answer[mood][lang])
+				reaction.reply(app, msg, self)
+
+	def view_chat_stats(self):
+		answer = lambda x, y=False: chat.service(x, y if y else chat.conf[x])
+
+		settings = {
+			'glob': answer('state'),
+			'lang': answer('lang'),
+			'mood': answer('mood'),
+			'priv': answer('state', chat.check_user(msg)),
+		}
+
+		return chat.service('settings').format(**settings)
+		
+	def change_options(self, app, msg, command):
+		user_id 	= msg.from_user.id
+		user_state= command == 'user state'
+		is_katsu	=	user_id == app.katsu_id
+		is_admin	= lambda: app.get_chat_member(msg.chat.id, user_id).status in ('administrator', 'creator')
+		service = self.service
+		mod = msg.command[1]
+
+		answer = False
+
+		if len(msg.command) > 1 and mod in self.keys(command):
+
+			if user_state:
+				prev_state= self.check_user(msg)
+
 			else:
-				answer = service('error', command)
+				if is_katsu or is_admin():
+					prev_state= self.conf[command]
+				else: 
+					answer = service('error', 'permission')
+
+			if not answer:
+				if mod == prev_state:
+					answer =  service('same', command)
+
+				else:
+					if user_state:
+						self.users[user_id] = mod
+					else:
+						self.conf[command] = mod
+
+					answer = service('change', command)
+				answer = answer.format(service(command, mod))
 		else:
-			answer = service('error', 'permission')
+			answer = service('error', command)
 		
 		msg.reply(answer)

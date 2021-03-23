@@ -3,7 +3,7 @@ import re
 
 names = {
 		'ru':['Ханекава {}', 'Ханекава-чан {}', 'Ханекава Тсубаса {}', 'Цубаса-кун {}', 'Някава {}', 'Някава-нян {}'],
-		'en':['Hanekawa {}', 'Hanekawa-chan {}','Hanekawa Tsubasa {}', 'Tsubasa-kun {}','Nyakawa {}', 'Nyakawa-nyan {}'],
+		'en':['Hanekawa {}', 'Hanekawa-chan {}','Hanekawa Tsubasa {}', 'Tsubasa-kun {}','Nyakawa {}','Nyakawa-nyan {}'],
 		'ua':['Ханекава {}', 'Ханекава-чан {}', 'Ханекава Тсубаса {}', 'Цубаса-кун {}', 'Някава {}', 'Някава-нян {}'],
 }
 
