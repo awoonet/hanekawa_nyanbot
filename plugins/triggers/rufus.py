@@ -50,7 +50,8 @@ answers = {
 }
 
 trigger = r'\b((rufus)|(руфус))\b'
-@app.on_message(app.filters.regex(trigger))
+command = ['rufus',  f'rufus@{app.username}']
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def rufus(app, msg, chat):
 	chat.replier(app, msg, answers)

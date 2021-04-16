@@ -50,7 +50,7 @@ answers = {
 }
 
 trigger = r'\b((м+ех)|(me+h))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def meh(app, msg, chat):
 	chat.replier(app, msg, answers)

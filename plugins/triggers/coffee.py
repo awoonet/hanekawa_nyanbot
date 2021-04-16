@@ -1,10 +1,11 @@
 from classes.client import app
 
+coffee = 'Ⓒчерного кофе, кофе с молокомⒸ'
 answers = {
 	'nyan': {
 		'ru': { 
-			'text' : ('*ⓃсⓃтавит чашечку Ⓒчерного кофе, кофе с молокомⒸ на столикⓋ ⓊⓋ*', 
-								'*ⓃпⓃодает чашечку Ⓒчерного кофе, кофе с молокомⒸ Ⓤ*'),
+			'text' : (f'*ⓃсⓃтавит чашечку {coffee} на столикⓋ ⓊⓋ*', 
+								f'*ⓃпⓃодает чашечку {coffee} Ⓤ*'),
 			},
 		'en': { 
 			'none' : True, 
@@ -15,7 +16,7 @@ answers = {
 	},
 	'lewd': {
 		'ru': { 
-			'text' : '*ⓃсⓃтавит чашечку Ⓒчерного кофе, кофе с молокомⒸ на прикроватный столик Ⓤ*', 
+			'text' : f'*ⓃсⓃтавит чашечку {coffee} на прикроватный столик Ⓤ*', 
 			},
 		'en': { 
 			'none' : True, 
@@ -49,7 +50,7 @@ answers = {
 }
 
 trigger = r'\b((налей|(по)?дай) кофе)\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def coffee(app, msg, chat):
 	chat.replier(app, msg, answers)

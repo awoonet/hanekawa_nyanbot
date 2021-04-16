@@ -3,7 +3,7 @@ from classes.client import app
 answers = {
 	'nyan': {
 		'ru': { 
-			'text' : ('*ⓃсⓃтавит чашечку тарелку с печеньками на столикⓋ ⓊⓋ*', 
+			'text' : ('*ⓃсⓃтавит тарелку с печеньками на столикⓋ ⓊⓋ*', 
 								'*ⓃпⓃротягивает печеньку Ⓤ*'),
 			},
 		'en': { 
@@ -49,7 +49,7 @@ answers = {
 }
 
 trigger = r'\b(((по)?дай) печен(ьку|ек))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def coffee(app, msg, chat):
 	chat.replier(app, msg, answers)

@@ -2,9 +2,11 @@ from classes.client import app
 
 answers = {
 	'nyan': {
-		'ru': { 
-			'none' : True, 
-			},
+		'ru': {	
+			'text' : ("Может все же ня? Хотя нет, не ня(",
+								"Это Ⓒне радует, печалитⒸ(",
+								"Это пройдет, Ⓤ."),
+		},
 		'en': { 
 			'none' : True, 
 			},
@@ -47,8 +49,8 @@ answers = {
 	},
 }
 
-trigger = r'\b((скороговорк[ау])|([нмnm][ьy]?[яa]+([hх][aа]){2,5}))\b'
+trigger = r'\b(((не|not) ){1}[нмnm][ьy]?[яa]+[нn]?[вфf]?[уu]*(c?k|к)?)\b'
 @app.on_message(app.filter_regex(trigger))
 @app.decorator
-def nyahaha(app, msg, chat):
+def nyan(app, msg, chat):
 	chat.replier(app, msg, answers)

@@ -79,7 +79,7 @@ answers = {
 
 
 trigger = r'\b((вас(три|3)к)|(vas(tri|3)k))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def vas3k(app, msg, chat):
 	chat.replier(app, msg, answers)

@@ -48,7 +48,7 @@ answers = {
 }
 
 trigger = r'\b(ла+пк?)\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def lapk(app, msg, chat):
 	chat.replier(app, msg, answers)

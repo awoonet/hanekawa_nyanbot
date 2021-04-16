@@ -1,7 +1,11 @@
+import re
+import shelve
+import traceback
+
 from pyrogram 		import Client, filters, idle, ContinuePropagation
+
 from classes.chat	import Chat
 from classes.lib 	import turn_on
-import shelve, traceback
 
 class app(Client):
 	id 				=  1056476287
@@ -76,7 +80,7 @@ class app(Client):
 		if user.username is not None:
 			return f"@{user.username}" 
 		elif user.last_name is not None:
-			return f"{user.first_name} {user._last.name}"
+			return f"{user.first_name} {user.last.name}"
 		else:
 			return user.first_name
 
@@ -86,14 +90,25 @@ class app(Client):
 		elif  msg.caption is not None:	return msg.caption
 		else:														return False
 	
+	@staticmethod
+	def filter_regex(data):
+		def func(flt, app, msg):
+			msg_text = app.text(msg)
+			if msg_text:
+				return re.search(flt.data, msg_text.lower())
+			else:
+				return None
+
+		return filters.create(func, data=data)
+
 	def id_formatter(self, msg):
 		txt = f'**Bot:** __@{self.username}__'
 		txt+= f'\n**Chat:** __{msg.chat.title}__'
 		txt+= f'\n**Chat ID:** __{msg.chat.id}__**/**__{msg.message_id}__'
 		user= msg.from_user
 		txt+= f'\n**User:** __{user.first_name} __'
-		txt+= f'__{user.last_name}__'			if user.last_name is not None else ''
-		txt+= f'__ (@{user.username})__'	if user.username  is not None else '' 
+		txt+= f' __{user.last_name}__'		if user.last_name is not None else ''
+		txt+= f' __(@{user.username})__'	if user.username  is not None else '' 
 		txt+= f'\n**User ID:** __{user.id}__'
 		if msg.text is not None:
 			txt+= f'\n**Text:** {msg.text.html}'

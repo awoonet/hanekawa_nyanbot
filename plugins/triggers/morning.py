@@ -65,7 +65,7 @@ answers = {
 }
 
 trigger = r'\b(((добро(го)? )?у+тр(е(чк)|ец)*а+)|(оха(ё|йо)+)|((доб)*ран((оч)*к[уа])))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def morning(app, msg, chat):
 	chat.replier(app, msg, answers)

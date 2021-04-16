@@ -71,8 +71,8 @@ answers = {
 	},
 }
 
-trigger = r'\b([нмnm][ьy]?[яa]+[нn]?[вфf]?[уu]*(c?k|к)?)\b'
-@app.on_message(app.filters.regex(trigger))
+trigger = r'\b((?<!не )(?<!not )[нмnm][ьy]?[яa]+([нn]?|[вфf]?|[уu]*|(c?k|к)?))\b'
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def nyan(app, msg, chat):
 	chat.replier(app, msg, answers)

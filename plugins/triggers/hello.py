@@ -69,7 +69,7 @@ answers = {
 }
 
 trigger = r'\b((приве+т(ству((ю)|(ем))*)*)|(здра+вствуй(те)*)|(ха+(й|юшки))|(h(i+|e(ll|ww)o+)))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def hello(app, msg, chat):
 	chat.replier(app, msg, answers)

@@ -64,7 +64,7 @@ answers = {
 }
 
 trigger = r'\b((но+чи)|(сно+в)|(оясуми(насай)?)|(good night)|(sweet dreams))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def night(app, msg, chat):
 	chat.replier(app, msg, answers)

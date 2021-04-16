@@ -53,7 +53,7 @@ answers = {
 }
 
 trigger = r'\b(([mp]u*r+k*)|([мп]у*р+к*))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def mur(app, msg, chat):
 	chat.replier(app, msg, answers)

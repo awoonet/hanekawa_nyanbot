@@ -58,7 +58,7 @@ answers = {
 }
 
 trigger = r'\b((про)?хо*л[оа]дно(вато)?)\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def cold(app, msg, chat):
 	chat.replier(app, msg, answers)

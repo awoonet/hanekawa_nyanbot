@@ -53,7 +53,7 @@ answers = {
 }
 
 trigger = r'\b(([рr]+[аяa]+[вw][рr]+)|(г?(r|р)[rр]+))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def rawr(app, msg, chat):
 	chat.replier(app, msg, answers)

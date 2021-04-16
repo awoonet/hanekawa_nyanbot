@@ -49,7 +49,7 @@ answers = {
 }
 
 trigger = r'\b((налей|(по)?дай) ча(я|ю))\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def coffee(app, msg, chat):
 	chat.replier(app, msg, answers)

@@ -58,7 +58,7 @@ answers = {
 }
 
 trigger = r'\b([аa][вw][уo]+)\b'
-@app.on_message(app.filters.regex(trigger))
+@app.on_message(app.filter_regex(trigger))
 @app.decorator
 def awoo(app, msg, chat):
 	chat.replier(app, msg, answers)
