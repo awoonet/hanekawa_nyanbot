@@ -22,7 +22,7 @@ class Replaier(TextFormatter, MessageSender):
         mood = self.chat.get_mood()
         reactions = self.app.reactions
 
-        for answer, category, trigger in triggers:
+        for category, trigger, regex in triggers:
             if getattr(self.chat, category):
-                if re.search(trigger, text):
-                    self.reply(reactions[answer][mood])
+                if re.search(regex, text):
+                    self.reply(reactions[trigger][mood])

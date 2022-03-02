@@ -41,15 +41,19 @@ def generate_chat(db: Database):
         @classmethod
         def find_or_create(cls, msg):
             if msg.chat.title:
-                params = dict(id=str(msg.chat.id), title=msg.chat.title)
+                params = {"id": str(msg.chat.id), "title": msg.chat.title}
             else:
-                params = dict(id=str(msg.from_user.id), title=t.username(msg.from_user))
+                params = {
+                    "id": str(msg.from_user.id),
+                    "title": t.username(msg.from_user),
+                }
 
             instance = cls.get(id=params["id"])
             if instance:
+                instance.title = params["title"]
                 return instance
             else:
-                return cls(**params)
+                cls(**params)
 
         @classmethod
         def get_by_msg(cls, msg):

@@ -13,21 +13,24 @@ def generate_user(db: Database, Chat):
         @classmethod
         def find_or_create(cls, msg, chat):
             if msg.sender_chat is not None:
-                params = dict(
-                    id=str(msg.sender_chat.id),
-                    name=msg.sender_chat.title,
-                    chat=chat,
-                )
+                params = {
+                    "id": str(msg.sender_chat.id),
+                    "name": msg.sender_chat.title,
+                    "chat": chat,
+                }
             else:
-                params = dict(
-                    id=str(msg.from_user.id), name=t.username(msg.from_user), chat=chat
-                )
+                params = {
+                    "id": str(msg.from_user.id),
+                    "name": t.username(msg.from_user),
+                    "chat": chat,
+                }
 
             instance = cls.get(id=params["id"], chat=chat.id)
             if instance:
+                instance.name = params["name"]
                 return instance
             else:
-                return cls(**params)
+                cls(**params)
 
         @classmethod
         def get_by_msg(cls, msg):

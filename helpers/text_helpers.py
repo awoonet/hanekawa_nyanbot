@@ -11,7 +11,7 @@ class TextHelper:
     @staticmethod
     def username(user):
         if user.username is not None:
-            return user.username
+            return f"@{user.username}"
         elif user.last_name is not None:
             return f"{user.first_name} {user.last_name}"
         else:

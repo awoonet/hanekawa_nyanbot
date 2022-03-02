@@ -17,3 +17,11 @@ def with_db(func):
             func(app, msg, user)
 
     return wrapper
+
+def with_db_for_query(func):
+    def wrapper(app, q):
+        with db_session:
+            user = per_message(app, q.message)
+            
+            func(app, q, user)
+    return wrapper

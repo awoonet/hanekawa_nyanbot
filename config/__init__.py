@@ -10,6 +10,4 @@ def app_init():
     app = tg_init()
     app.db, app.chat, app.user = db_init()
 
-    load_reactions()
-
     return app
