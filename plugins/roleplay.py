@@ -33,11 +33,11 @@
 # 		user  = msg.reply_to_message.from_user
 # 	else:
 # 		user = app.get_users(choice(chat.users['on']))
-		
+
 # 	username_1 = app.username_finder(msg.from_user)
 # 	username_2 = app.username_finder(user)
 
 # 	command = msg.command[0].replace(f'@{app.username}', '')
 # 	txt = f"**✵{username_1}** {chat.service('roleplay', command)} **{username_2}✵**"
-	
+
 # 	app.roleplay_send(msg, txt)
