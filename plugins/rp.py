@@ -6,7 +6,7 @@ from helpers import SendHelper as s
 commands = ["pat", "hug", "koos", "lapk", "lick", "jamk", "kiss"]
 
 
-@app.on_message(app.filters.command(commands) & app.filters.group)
+@app.on_message(app.filters.command(commands) & app.filters.group, group=10)
 @app.with_db
 def hnkw_roleplay(_, msg, user):
 
@@ -18,9 +18,9 @@ def hnkw_roleplay(_, msg, user):
     else:
         user_recepient = choice(user.chat.users).name
 
-    command = msg.command[0]  # .replace(f"@{app.username}", "")
+    command = msg.command[0]
     txt = f"**✵{user_initiator}** {command} **{user_recepient}✵**"
 
     # {chat.service('roleplay', command)}
 
-    s.roleplay_send(txt, msg)
+    s.roleplay_send(app, msg, txt)

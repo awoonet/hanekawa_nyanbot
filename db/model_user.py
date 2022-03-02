@@ -30,7 +30,7 @@ def generate_user(db: Database, Chat):
                 instance.name = params["name"]
                 return instance
             else:
-                cls(**params)
+                return cls(**params)
 
         @classmethod
         def get_by_msg(cls, msg):
