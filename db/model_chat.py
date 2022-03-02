@@ -1,10 +1,9 @@
 from pony.orm import *
-from db.helpers import Helpers
 from helpers import TextHelper as t
 
 
 def generate_chat(db: Database):
-    class Chat(db.Entity, Helpers):
+    class Chat(db.Entity):
         id = PrimaryKey(str)
         title = Required(str)
         users = Set("User")
@@ -45,7 +44,12 @@ def generate_chat(db: Database):
                 params = dict(id=str(msg.chat.id), title=msg.chat.title)
             else:
                 params = dict(id=str(msg.from_user.id), title=t.username(msg.from_user))
-            return super().find_or_create(**params)
+
+            instance = cls.get(id=params["id"])
+            if instance:
+                return instance
+            else:
+                return cls(**params)
 
         @classmethod
         def get_by_msg(cls, msg):

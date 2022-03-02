@@ -2,9 +2,9 @@ class TextHelper:
     @staticmethod
     def msg_text(msg):
         if msg.text is not None:
-            return msg.text
+            return msg.text.html
         elif msg.caption is not None:
-            return msg.caption
+            return msg.caption.html
         else:
             return ""
 
