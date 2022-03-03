@@ -22,6 +22,5 @@ def tg_init():
 
     app = Client(**telegram_credentials)
 
-    print(f"TG user={app.get_me().username}")
     print("TG initialized.")
     return app
