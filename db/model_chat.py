@@ -53,7 +53,7 @@ def generate_chat(db: Database):
                 instance.title = params["title"]
                 return instance
             else:
-                cls(**params)
+                return cls(**params)
 
         @classmethod
         def get_by_msg(cls, msg):
