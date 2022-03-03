@@ -7,6 +7,10 @@ from db.model_user import generate_user
 
 def postgresql_credentials():
     if not env("DATABASE_URL"):
+        print(
+            f"DB user: {env('PSQL_USER')} host={env('PSQL_HOST')} database={env('DB_NAME')}",
+            flush=True,
+        )
         return dict(
             provider="postgres",
             user=env("PSQL_USER"),
@@ -14,6 +18,7 @@ def postgresql_credentials():
             host=env("PSQL_HOST"),
             database=env("DB_NAME"),
         )
+
     else:
         url = urlparse.urlparse(env("DATABASE_URL"))
         return dict(
@@ -36,5 +41,5 @@ def db_init():
     db.bind(**postgresql_credentials())
     db.generate_mapping(create_tables=True)
 
-    print("DB initialized.")
+    print("DB initialized.", flush=True)
     return db, Chat, User

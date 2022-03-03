@@ -7,7 +7,9 @@ def load_reactions() -> dict:
 
     reactions = {}
 
+    counter = 0
     for reaction in reactions_yaml:
+        counter += 1
         key = reaction.split(".")[0]
         with open(f"{path}/{reaction}", "r") as file:
             file = file.read()
@@ -16,6 +18,6 @@ def load_reactions() -> dict:
 
         reactions[key] = value
 
-    print("Reactions loaded.")
+    print(f"Loaded {counter} reactions.", flush=True)
 
     return reactions
