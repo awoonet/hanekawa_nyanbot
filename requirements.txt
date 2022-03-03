@@ -4,7 +4,7 @@ tgcrypto==1.2.3
 
 # PostgrSQL DB
 pony==0.7.16
-psycopg2==2.9.3
+psycopg2-binary==2.9.3
 
 python-i18n[YAML]==0.3.9
 python-dotenv==0.19.2
