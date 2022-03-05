@@ -1,9 +1,10 @@
 from pony.orm import *
-from helpers import TextHelper as t
+from helpers.text_helpers import TextHelper as t
+from db.helpers import DBHelpers
 
 
 def generate_chat(db: Database):
-    class Chat(db.Entity):
+    class Chat(db.Entity, DBHelpers):
         id = PrimaryKey(str)
         title = Required(str)
         users = Set("User")
@@ -11,17 +12,18 @@ def generate_chat(db: Database):
         lang = Required(int, default=1)
         mood = Required(int, default=1)
 
-        nyan = Required(bool, default=True)
-        food = Required(bool, default=True)
-        memes = Required(bool, default=True)
-        empathic = Required(bool, default=True)
-        greeters = Required(bool, default=True)
+        switch = Required(bool, default=True)
+        categories = Required(Json, default=dict(
+            nyan = True, empathic = True,
+            food = True, greeters = True,
+            memes = True))
 
         langs = {1: "ru", 2: "en", 3: "ua"}
         moods = {1: "nyan", 2: "lewd", 3: "angr", 4: "scar"}
 
         get_lang = lambda self: self.langs[self.lang]
         get_mood = lambda self: self.moods[self.mood]
+        get_category = lambda self, cat: self.switches[self.categories[cat]]
 
         def set_lang(self, lang):
             self.lang = self.set_polymophic(lang, self.langs)
@@ -37,6 +39,9 @@ def generate_chat(db: Database):
 
                 position = values.index(one)
                 return keys[position]
+        
+        def change_category(self, category: str) -> None:
+            self.categories[category] = not self.categories[category] 
 
         @classmethod
         def find_or_create(cls, msg):

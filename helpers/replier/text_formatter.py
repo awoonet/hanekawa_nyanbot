@@ -1,6 +1,6 @@
 import re
 from random import choice, randint
-from helpers import TextHelper as t
+from helpers.text_helpers import TextHelper as t
 from helpers.replier.dicts import *
 
 

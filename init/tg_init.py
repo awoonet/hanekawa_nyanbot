@@ -1,17 +1,9 @@
 from os import getenv as env
-from pyrogram import Client, filters
-from helpers import with_db, load_reactions
+
+from init.client import Client
 
 
-class Client(Client):
-    filters = filters
-    with_db = with_db
-    reactions = load_reactions()
-
-    media_reactions_storage = -1001157282357
-
-
-def tg_init():
+def tg_init() -> Client:
     telegram_credentials = dict(
         session_name=env("SESSION_NAME"),
         api_id=env("API_ID"),

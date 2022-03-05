@@ -1,16 +1,14 @@
 from os import getenv as env
 import urllib.parse as urlparse
+
 from pony.orm import *
+
 from db.model_chat import generate_chat
 from db.model_user import generate_user
 
 
-def postgresql_credentials():
+def postgresql_credentials() -> dict:
     if not env("DATABASE_URL"):
-        print(
-            f"DB user: {env('PSQL_USER')} host={env('PSQL_HOST')} database={env('DB_NAME')}",
-            flush=True,
-        )
         return dict(
             provider="postgres",
             user=env("PSQL_USER"),
@@ -31,7 +29,7 @@ def postgresql_credentials():
         )
 
 
-def db_init():
+def db_init() -> tuple:
 
     db = Database()
 

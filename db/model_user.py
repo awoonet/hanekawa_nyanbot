@@ -1,9 +1,9 @@
 from pony.orm import *
-from helpers import TextHelper as t
-
+from helpers.text_helpers import TextHelper as t
+from db.helpers import DBHelpers
 
 def generate_user(db: Database, Chat):
-    class User(db.Entity):
+    class User(db.Entity, DBHelpers):
         id = Required(str)
         name = Required(str)
         switch = Required(bool, default=True)
@@ -13,28 +13,29 @@ def generate_user(db: Database, Chat):
         @classmethod
         def find_or_create(cls, msg, chat):
             if msg.sender_chat is not None:
-                params = {
-                    "id": str(msg.sender_chat.id),
-                    "name": msg.sender_chat.title,
-                    "chat": chat,
-                }
+                params = dict(
+                    id=str(msg.sender_chat.id),
+                    name=msg.sender_chat.title
+                )
             else:
-                params = {
-                    "id": str(msg.from_user.id),
-                    "name": t.username(msg.from_user),
-                    "chat": chat,
-                }
+                params = dict(
+                    id=str(msg.from_user.id),
+                    name=t.username(msg.from_user)
+                ) 
 
             instance = cls.get(id=params["id"], chat=chat.id)
             if instance:
                 instance.name = params["name"]
                 return instance
             else:
-                return cls(**params)
+                return cls(chat=chat, **params)
 
         @classmethod
         def get_by_msg(cls, msg):
-            id = str(msg.from_user.id)
+            if msg.sender_chat is not None:
+                id=str(msg.sender_chat.id)
+            else:
+                id = str(msg.from_user.id)
             return cls.get(id=id)
 
     return User

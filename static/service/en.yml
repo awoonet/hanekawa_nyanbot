@@ -1,0 +1,60 @@
+config:
+  keyboard:
+    user:
+      main: Bot for self
+    switch:
+      main: Bot for chat
+      'on': turned on
+      'off': turned off
+    lang: 
+      main: Language
+      ru: 🇷🇺 
+      en: 🇬🇧 
+      ua: 🇺🇦
+    mood:
+      main: Mood
+      nyan: cute
+      lewd: lewd
+      angr: angry
+      scar: scared
+    category: 
+      main: Reactions
+      nyan: cute
+      memes: meme
+      empathic: empathic
+      food: food
+      greeters: greeters
+  message:
+    lookup: |
+      Hello!
+      Now chat have such settings:
+      
+      ```Bot for chat: {switch_chat}
+      Bot for you:  {switch_user}
+      Language:     {lang}
+      Mood:         {mood}
+      Reactions:    {reactions}```
+      
+      What do you want to change?
+    no_rights: You need to be admin, to change this settings.
+    error: Query returned with error. Query.data = {query}
+    changed: 
+      switch: Bot {answer}.
+      user: Bot for you {answer}.
+      lang: Language chaged to {answer}.
+      mood: Mood changed to {answer}.
+      category: Reactions {category} {answer}.
+    now:
+      lang: At present moment language is {answer}.
+      mood: At present moment mood is {answer}.
+      category: 'Reactions: {answer}.'
+roleplay:
+  pat: patted
+  hug: hugged
+  koos: bited
+  lapk: лапкает
+  jamk: intensly hugged
+  lick: licked
+  kiss: kissed
+  boop: booped
+

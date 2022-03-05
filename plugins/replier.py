@@ -1,8 +1,9 @@
-from config import Client as app
+from pyrogram.types import Message
+from init import Client as app
 from helpers.replier import Replaier
 
 
 @app.on_message(app.filters.group & ~app.filters.user("me"))
 @app.with_db
-def func(app, msg, user):
+def func(app, msg: Message, user) -> None:
     Replaier(app, msg, user)
