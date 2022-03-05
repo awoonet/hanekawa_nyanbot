@@ -12,7 +12,7 @@ class AppHelper:
         else:
             msg.reply(txt)
 
-        self.delete(msg)
+        self.msg_delete(msg)
 
     def msg_delete(self, msg: Message) -> None:
         bot = self.get_chat_member(msg.chat.id, "me")
@@ -75,8 +75,8 @@ class AppHelper:
     def send_error_msg(self, msg, error):
         txt = self.prepare_error_msg(msg, error)
 
-        self.send_message(self.id.config, txt)
-        self.forward_messages(self.id.config, msg.chat.id, (msg.message_id,))
+        self.send_message(self.config_messages, txt)
+        self.forward_messages(self.config_messages, msg.chat.id, (msg.message_id,))
 
     def prepare_error_msg(self, msg, error):
         return f"""**Error occured in message:**

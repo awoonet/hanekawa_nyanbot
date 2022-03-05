@@ -6,7 +6,7 @@ from helpers.text_helpers import TextHelper as th
 commands = ["pat", "hug", "koos", "lapk", "lick", "jamk", "kiss"]
 
 
-@app.on_message(app.filters.command(["me"]))
+@app.on_message(app.filters.command(["me"]), group=9)
 def me(app, msg: Message) -> None:
     txt = th.msg_text(msg)
     txt = txt.replace("/me", f"**✵{th.username(msg.from_user)}**")
