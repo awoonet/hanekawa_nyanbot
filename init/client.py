@@ -1,9 +1,9 @@
 from pyrogram import Client, filters, idle
 from db.helpers import ClientDBHelpers
-from helpers.app_helpers import AppHelper
+from helpers.app_helpers import AppHelper, AppAwaking, AppHandleError
 
 
-class Client(Client, AppHelper, ClientDBHelpers):
+class Client(Client, AppHelper, AppAwaking, AppHandleError, ClientDBHelpers):
     filters = filters
 
     def run(self):
