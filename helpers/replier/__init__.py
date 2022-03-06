@@ -14,7 +14,9 @@ class Replaier(TextFormatter, MessageSender):
         self.user = user
         self.chat = user.chat
 
-        if user.chat.switch and user.switch:
+        user_not_ignored = msg.from_user.id not in app.ignored_users
+
+        if user.switch and user.chat.switch and user_not_ignored:
             self.parse_message()
 
     def parse_message(self):

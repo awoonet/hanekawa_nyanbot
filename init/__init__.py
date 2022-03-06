@@ -1,3 +1,4 @@
+from os import getenv as env
 from dotenv import load_dotenv
 
 from init.client import Client
@@ -13,5 +14,9 @@ def app_init() -> Client:
     app.db, app.chat, app.user = db_init()
     app.service_messages = load_yaml("service", "Loaded {counter} locales.")
     app.reactions = load_yaml("reactions", "Loaded {counter} reactions.")
+
+    app.media_reactions_storage = env("MEDIA_REACTIONS_STORAGE")
+    app.config_messages = env("CONFIG_MESSAGES")
+    app.ignored_users = eval(env("IGNORED_USERS"))
 
     return app

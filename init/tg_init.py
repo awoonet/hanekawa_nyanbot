@@ -5,7 +5,7 @@ from init.client import Client
 
 def tg_init() -> Client:
     telegram_credentials = dict(
-        session_name=env("SESSION_NAME"),
+        session_name=":memory:",
         api_id=env("API_ID"),
         api_hash=env("API_HASH"),
         bot_token=env("BOT_TOKEN"),
