@@ -1,7 +1,7 @@
 import re
 from random import choice, randint
-from helpers.text_helpers import TextHelper as t
-from helpers.replier.dicts import *
+from client.helper_text import TextHelper as t
+from plugins.replier_helpers.dicts import *
 
 
 class TextFormatter:

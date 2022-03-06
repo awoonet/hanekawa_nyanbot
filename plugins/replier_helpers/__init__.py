@@ -1,8 +1,8 @@
 import re
 
-from helpers.text_helpers import TextHelper as t
-from helpers.replier.text_formatter import TextFormatter
-from helpers.replier.message_sender import MessageSender
+from client.helper_text import TextHelper as t
+from plugins.replier_helpers.text_formatter import TextFormatter
+from plugins.replier_helpers.message_sender import MessageSender
 
 from static.triggers import triggers
 

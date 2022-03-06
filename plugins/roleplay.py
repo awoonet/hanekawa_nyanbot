@@ -1,18 +1,19 @@
 from pyrogram.types import Message
-from init import Client as app
-from helpers.text_helpers import TextHelper as th
+from app_init import Client as app
+from client.helper_text import TextHelper as th
 
 commands = ["pat", "hug", "koos", "lapk", "lick", "jamk", "kiss"]
 
 
-@app.on_message(app.filters.command(["me"]), group=9)
-def me(app, msg: Message) -> None:
+@app.on_message(app.filters.command(["me"]), group=999)
+@app.with_db
+def me(app, msg: Message, user) -> None:
     txt = th.msg_text(msg)
     txt = txt.replace("/me", f"**✵{th.username(msg.from_user)}**")
     app.roleplay_send(msg, txt)
 
 
-@app.on_message(app.filters.command(commands) & app.filters.group, group=10)
+@app.on_message(app.filters.command(commands) & app.filters.group, group=999)
 @app.with_db
 def hnkw_roleplay(app, msg: Message, user) -> None:
 

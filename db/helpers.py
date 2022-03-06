@@ -14,6 +14,8 @@ class ClientDBHelpers:
                     func(app, msg, user)
             except Exception as e:
                 app.send_error_msg(msg, e)
+            finally:
+                msg.continue_propagation()
 
         return wrapper
 
@@ -27,6 +29,19 @@ class ClientDBHelpers:
         chat.users.add(user)
 
         return user
+
+    def service(self, chat) -> Callable:
+        lang: str = chat.get_lang()
+        service_messages: dict = self.service_messages.get(lang)
+
+        def t(string: str) -> str:
+            result: Union[str, dict] = service_messages
+
+            for i in string.split("."):
+                result = result.get(i)
+            return result
+
+        return t
 
 
 class DBHelpers:

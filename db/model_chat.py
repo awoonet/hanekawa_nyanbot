@@ -1,5 +1,5 @@
 from pony.orm import *
-from helpers.text_helpers import TextHelper as t
+from client.helper_text import TextHelper as t
 from db.helpers import DBHelpers
 
 
@@ -13,10 +13,12 @@ def generate_chat(db: Database):
         mood = Required(int, default=1)
 
         switch = Required(bool, default=True)
-        categories = Required(Json, default=dict(
-            nyan = True, empathic = True,
-            food = True, greeters = True,
-            memes = True))
+        categories = Required(
+            Json,
+            default=dict(
+                nyan=True, empathic=True, food=True, greeters=True, memes=True
+            ),
+        )
 
         langs = {1: "ru", 2: "en", 3: "ua"}
         moods = {1: "nyan", 2: "lewd", 3: "angr", 4: "scar"}
@@ -39,9 +41,9 @@ def generate_chat(db: Database):
 
                 position = values.index(one)
                 return keys[position]
-        
+
         def change_category(self, category: str) -> None:
-            self.categories[category] = not self.categories[category] 
+            self.categories[category] = not self.categories[category]
 
         @classmethod
         def find_or_create(cls, msg):

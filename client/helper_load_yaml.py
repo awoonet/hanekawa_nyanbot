@@ -2,6 +2,16 @@ import os, re, yaml
 
 
 def load_yaml(path: str, message: str) -> dict:
+    """
+    Load locales or smth else from folder with yaml files.
+
+    Args:
+        path (str): path to folder with yaml files
+        message (str): print message after load all files. String should have "{conter}"
+
+    Returns:
+        dict: { 'file_name': file_content }
+    """
     path = f"./static/{path}"
     yaml_files = os.listdir(path=path)
 

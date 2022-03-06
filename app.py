@@ -1,3 +1,5 @@
-from init import app_init
+from app_init import app_init
 
-app_init().run()
+app = app_init()
+
+app.run()

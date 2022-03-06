@@ -1,25 +1,46 @@
 from pyrogram.types import Message, CallbackQuery
-from init import Client as app
-from helpers.inline_keyboard import make_keyboard
-from helpers.text_helpers import TextHelper as th
+from app_init import Client as app
+from client import make_keyboard, TextHelper as th
 
 
-@app.on_message(app.filters.command(["config"]))
+def reactions(t, chat):
+    reactions = []
+    for key, value in chat.categories.items():
+        if value:
+            reactions.append(t(f"config.keyboard.category.{key}"))
+    return ", ".join(reactions)
+
+
+def make_lookup_message(t, user) -> str:
+    chat = user.chat
+
+    text = t("config.message.lookup").format(
+        switch_chat=t(f"config.keyboard.switch.{chat.get_switch()}"),
+        switch_user=t(f"config.keyboard.switch.{user.get_switch()}"),
+        lang=t(f"config.keyboard.lang.{chat.get_lang()}"),
+        mood=t(f"config.keyboard.mood.{chat.get_mood()}"),
+        reactions=reactions(t, chat),
+    )
+    return text
+
+
+@app.on_message(app.filters.command(["config"]), group=999)
 @app.with_db
 def send_keyboard(app, msg: Message, user) -> None:
     t = app.service(user.chat)
 
-    text = th.make_lookup_message(t, user)
+    text = make_lookup_message(t, user)
 
     if app.is_admin(msg):
         kb = [["switch.main", "user.main"], ["lang.main", "mood.main", "category.main"]]
     else:
         kb = [["user.main"]]
 
-    msg.reply(text, reply_markup=make_keyboard(t, kb))
+    keyboard_func = lambda button: t(f"config.keyboard.{button}")
+    msg.reply(text, reply_markup=make_keyboard(keyboard_func, kb))
 
 
-@app.on_callback_query(group=10)
+@app.on_callback_query(group=999)
 @app.with_db
 def parse_query(app, query: CallbackQuery, user):
     chat = user.chat
@@ -85,6 +106,7 @@ def parse_query(app, query: CallbackQuery, user):
         text = t("config.message.no_rights")
 
     if kb is not None:
-        kb = make_keyboard(t, kb)
+        keyboard_func = lambda button: t(f"config.keyboard.{button}")
+        kb = make_keyboard(keyboard_func, kb)
 
     query.message.edit(text, reply_markup=kb)

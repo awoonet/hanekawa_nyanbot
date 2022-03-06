@@ -1,11 +1,4 @@
-# Telegram
-pyrogram==1.4.7
-tgcrypto==1.2.3
-
 # PostgrSQL DB
 pony==0.7.16
 psycopg2-binary==2.9.3
 
-python-dotenv==0.19.2
-requests==2.27.1
-PyYAML==6.0
