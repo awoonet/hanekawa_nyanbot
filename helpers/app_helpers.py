@@ -45,7 +45,7 @@ class AppHelper:
     # ---------------------------------------------------------------------------
     def send_awaking_msg(self):
         txt = self.prepare_awaking_msg()
-        self.send_message(self.config_messages, txt)
+        self.send_message(int(self.config_messages), txt)
 
     def prepare_awaking_msg(self):
         a = "**Turned on bot:** \n\n"
@@ -75,8 +75,8 @@ class AppHelper:
     def send_error_msg(self, msg, error):
         txt = self.prepare_error_msg(msg, error)
 
-        self.send_message(self.config_messages, txt)
-        self.forward_messages(self.config_messages, msg.chat.id, (msg.message_id,))
+        self.send_message(int(self.config_messages), txt)
+        self.forward_messages(int(self.config_messages), msg.chat.id, (msg.message_id,))
 
     def prepare_error_msg(self, msg, error):
         return f"""**Error occured in message:**
