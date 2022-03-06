@@ -82,9 +82,9 @@ class AppHelper:
 
     def prepare_error_msg(self, msg, error):
         return (
-            "**Error occured in message:**"
-            f"{self.prepare_info_msg(msg)}"
-            f"**Error:** ```{str(error)}```"
+            "**Error occured in message:**\n\n"
+            f"{self.prepare_info_msg(msg)}\n\n"
+            f"**Error:** ```{str(error)}```\n"
             f"**Traceback:** ```{str(traceback.format_exc())}```"
         )
 

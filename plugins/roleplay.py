@@ -22,7 +22,6 @@ def hnkw_roleplay(app, msg: Message, user) -> None:
     if msg.reply_to_message is not None:
         user_recepient = th.username(msg.reply_to_message.from_user)
     else:
-        breakpoint()
         user_recepient = user.chat.users.random(limit=1)[0].name
 
     reaction = t(f"roleplay.{msg.command[0]}")
