@@ -1,4 +1,3 @@
-from random import choice
 from pyrogram.types import Message
 from init import Client as app
 from helpers.text_helpers import TextHelper as th
@@ -23,7 +22,8 @@ def hnkw_roleplay(app, msg: Message, user) -> None:
     if msg.reply_to_message is not None:
         user_recepient = th.username(msg.reply_to_message.from_user)
     else:
-        user_recepient = choice(user.chat.users).name
+        breakpoint()
+        user_recepient = user.chat.users.random(limit=1)[0].name
 
     reaction = t(f"roleplay.{msg.command[0]}")
     txt = f"**✵{user_initiator}** {reaction} **{user_recepient}✵**"
