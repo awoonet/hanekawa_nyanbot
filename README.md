@@ -28,6 +28,8 @@ python3 -m pip install -r requirements.txt
 
 - You can start bot on your machine or in Docker.
 
+  - If you would use docker, make `/app/session` as docker volume.
+
 - It has config file for CapRover self-hosted PaaS as well.
 
 - If you want to start up it on Heroku, please add `Procfile` with content:
