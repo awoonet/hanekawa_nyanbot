@@ -16,8 +16,8 @@ python3 -m pip install -r requirements.txt
 
 - You need add this environment variables:
 
-  - API_ID, API_HASH - obtain it here: https://my.telegram.org/apps
-  - BOT_TOKEN - obtain from BotFather in telegram
+  - API_ID, API_HASH - obtain on [telegram register app page](https://my.telegram.org/apps)
+  - BOT_TOKEN - obtain from telegram bot for registring bots - [BotFather](https://t.me/BotFather)
   - DATABASE_URL - link in format `postgres://USER:PASSWORD@LINK_TO_DB:5432/DATABASE_NAME`
 
   - MEDIA_REACTIONS_STORAGE - channel with media reactions
@@ -44,4 +44,4 @@ worker: python3 app.py
 
 - Can answer on commands: `/me, /pat, /hug, /boop, /jamk, /lapk, /koos, /lick, /kiss`.
 
-- Use /config to set up bot parameters in this chat. (Only for chat admins)
+- Use `/config` to set up bot parameters in this chat. (Only for chat admins)
