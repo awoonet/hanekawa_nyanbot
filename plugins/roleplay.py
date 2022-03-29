@@ -1,3 +1,4 @@
+import re
 from pyrogram.types import Message
 from app_init import Client as app
 from client.helper_text import TextHelper as th
@@ -16,12 +17,13 @@ def me(app, msg: Message, user) -> None:
 @app.on_message(app.filters.command(commands) & app.filters.group, group=999)
 @app.with_db
 def hnkw_roleplay(app, msg: Message, user) -> None:
-
     t = app.service(user.chat)
     user_initiator = th.username(msg.from_user)
 
     if msg.reply_to_message is not None:
         user_recepient = th.username(msg.reply_to_message.from_user)
+    elif msg.mentioned:
+        user_recepient = re.match("@(\w+)\W", msg.text)
     else:
         user_recepient = user.chat.users.random(limit=1)[0].name
 
