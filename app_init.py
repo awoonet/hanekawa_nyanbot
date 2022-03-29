@@ -9,8 +9,8 @@ load_dotenv()
 
 
 class Client(Client, ClientDBHelpers):
-    service_messages = load_yaml("service", "Loaded {counter} locales.")
-    reactions = load_yaml("reactions", "Loaded {counter} reactions.")
+    service_messages = load_yaml("service", "Locales {counter} loaded.")
+    reactions = load_yaml("reactions", "Reactions {counter} loaded.")
 
     media_reactions_storage = env("MEDIA_REACTIONS_STORAGE")
     config_messages = env("CONFIG_MESSAGES")

@@ -1,4 +1,4 @@
-import os, re, yaml
+import os, re, yaml, logging
 
 
 def load_yaml(path: str, message: str) -> dict:
@@ -28,6 +28,6 @@ def load_yaml(path: str, message: str) -> dict:
 
         result[key] = value
 
-    print(message.format(counter=counter), flush=True)
+    logging.debug(message.format(counter=counter))
 
     return result

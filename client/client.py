@@ -1,3 +1,4 @@
+import logging
 from os import getenv as env
 from dotenv import load_dotenv
 from pyrogram import Client, filters, idle
@@ -32,7 +33,7 @@ class Client(Client, AppHelper, AppAwaking, AppHandleError):
 
         super().__init__(**telegram_credentials)
 
-        print("TG initialized.")
+        logging.warning("Pyrogram initialized")
 
     def run(self):
         self.start()

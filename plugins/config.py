@@ -87,7 +87,7 @@ def parse_query(app, query: CallbackQuery, user):
             case "category":
                 if data[1] == "main":
                     text = t("config.message.now.category").format(
-                        answer=th.reactions(t, chat)
+                        answer=chat.i18n_categories(t)
                     )
                     kb = [[f"category.{i}" for i in chat.categories.keys()]]
 

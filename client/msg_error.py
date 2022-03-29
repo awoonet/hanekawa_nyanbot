@@ -27,7 +27,7 @@ class AppHandleError:
         )
 
     def prepare_error_keyboard(self, error):
-        error = error.replace(" ", "+")
+        error = str(error).replace(" ", "+")
         services = {
             "Google": "www.google",
             "StackOverflow": "stackoverflow",

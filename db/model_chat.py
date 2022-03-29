@@ -1,5 +1,5 @@
 from pony.orm import *
-from client.helper_text import TextHelper as t
+from client.helper_text import TextHelper as th
 from db.helpers import DBHelpers
 
 
@@ -45,6 +45,15 @@ def generate_chat(db: Database):
         def change_category(self, category: str) -> None:
             self.categories[category] = not self.categories[category]
 
+        def i18n_categories(self, t):
+            return ", ".join(
+                [
+                    t(f"config.keyboard.category.{x}")
+                    for x, y in self.categories.items()
+                    if y
+                ]
+            )
+
         @classmethod
         def find_or_create(cls, msg):
             if msg.chat.title:
@@ -52,7 +61,7 @@ def generate_chat(db: Database):
             else:
                 params = {
                     "id": str(msg.from_user.id),
-                    "title": t.username(msg.from_user),
+                    "title": th.username(msg.from_user),
                 }
 
             instance = cls.get(id=params["id"])

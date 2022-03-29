@@ -1,3 +1,4 @@
+import logging
 from os import getenv as env
 import urllib.parse as urlparse
 
@@ -39,5 +40,5 @@ def db_init() -> tuple:
     db.bind(**postgresql_credentials())
     db.generate_mapping(create_tables=True)
 
-    print("DB initialized.", flush=True)
+    logging.warning("DB initialized")
     return db, Chat, User
