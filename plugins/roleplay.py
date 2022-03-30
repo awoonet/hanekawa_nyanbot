@@ -20,11 +20,11 @@ def hnkw_roleplay(app, msg: Message, user) -> None:
     t = app.service(user.chat)
     user_initiator = th.username(msg.from_user)
 
-    username = re.match(r"^@(\w+)$", msg.command[1]).group(0)
-    if msg.reply_to_message is not None:
+    match = re.search(r"^@(\w+)$", msg.command[-1])
+    if match:
+        user_recepient = match.group(0)
+    elif msg.reply_to_message is not None:
         user_recepient = th.username(msg.reply_to_message.from_user)
-    elif username:
-        user_recepient = username
     else:
         user_recepient = user.chat.users.random(limit=1)[0].name
 
