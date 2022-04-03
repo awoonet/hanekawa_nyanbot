@@ -1,3 +1,4 @@
+me - old good /me
 pat - pat someone
 hug - hug someone
 paw - paw someone
