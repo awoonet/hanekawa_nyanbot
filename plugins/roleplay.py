@@ -3,7 +3,7 @@ from pyrogram.types import Message
 from app_init import Client as app
 from client.helper_text import TextHelper as th
 
-commands = ["pat", "hug", "koos", "lapk", "lick", "jamk", "kiss"]
+commands = ["pat", "hug", "paw", "koos", "lapk", "lick", "jamk", "kiss"]
 
 
 @app.on_message(app.filters.command(["me"]), group=999)
