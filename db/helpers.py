@@ -22,7 +22,7 @@ class ClientDBHelpers:
     @staticmethod
     def db_per_message(app, msg: Union[Message, CallbackQuery]) -> None:
         if type(msg) is CallbackQuery:
-            msg = msg.message
+            msg: Message = msg.message
 
         chat = app.chat.find_or_create(msg)
         user = app.user.find_or_create(msg, chat)
@@ -45,8 +45,8 @@ class ClientDBHelpers:
 
 
 class DBHelpers:
-    switches = {True: "on", False: "off"}
-    get_switch = lambda self: self.switches[self.switch]
+    switches: dict = {True: "on", False: "off"}
+    get_switch: Callable = lambda self: self.switches[self.switch]
 
     def change_switch(self) -> None:
         self.switch = not self.switch
