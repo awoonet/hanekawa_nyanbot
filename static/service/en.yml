@@ -1,15 +1,20 @@
 config:
   keyboard:
-    user:
-      main: Bot for self
+    config:
+      main: Settings
+      back: Back
     switch:
       main: Bot for chat
-      'on': turned on
-      'off': turned off
-    lang: 
+      "on": turned on
+      "off": turned off
+    user:
+      main: Bot for self
+      "on": turned on
+      "off": turned off
+    lang:
       main: Language
-      ru: 🇷🇺 
-      en: 🇬🇧 
+      ru: 🇷🇺
+      en: 🇬🇧
       ua: 🇺🇦
     mood:
       main: Mood
@@ -17,28 +22,31 @@ config:
       lewd: lewd
       angr: angry
       scar: scared
-    category: 
+    category:
       main: Reactions
       nyan: cute
       memes: meme
       empathic: empathic
       food: food
       greeters: greeters
+    help:
+      main: Help
+      category: Reactions
+      roleplay: Roleplay
+      other: Other
   message:
     lookup: |
       Hello!
       Now chat have such settings:
-      
+
       ```Bot for chat: {switch_chat}
       Bot for you:  {switch_user}
       Language:     {lang}
       Mood:         {mood}
       Reactions:    {reactions}```
-      
+
       What do you want to change?
-    no_rights: You need to be admin, to change this settings.
-    error: Query returned with error. Query.data = {query}
-    changed: 
+    changed:
       switch: Bot {answer}.
       user: Bot for you {answer}.
       lang: Language chaged to {answer}.
@@ -47,14 +55,48 @@ config:
     now:
       lang: At present moment language is {answer}.
       mood: At present moment mood is {answer}.
-      category: 'Reactions: {answer}.'
+      category: "Reactions: {answer}."
+    help:
+      initial: |
+        Hey! This is a help message to help you figure out what I can do.
+        Choose one of the categories you want to read about.
+      category: |
+        I can respond to different triggers, which are divided into several categories, namely:
+          Cute, Meme
+
+        Cute includes:
+          awoo, baka, paw, meh, nya, not nya, kiss, lick, leez, mur, pur, rawr
+        Meme:
+          facepalm, nyahaha, F, rkn, vivivi
+
+        Sorry, I don't know these categories in English(
+          Empathy, Food, Greetings
+        Please, help me to learn it, write to @nyawoobot.
+      roleplay: |
+        You can perform an action by writing one of the commands:
+        /pat, /hug, /paw, /koos, /lapk, /jamk, /lick, /kiss, /boop
+
+        You can select a specific user by replying to their message, or by writing their nickname after the "@".
+        If you do not specify someone, then your hugs will go to a random user.
+
+        There is also a /me command that allows you to simply perform an action on your behalf.
+        Let's imagine that your nickname is @nyawoobot. The command "/me growls" will be answered as "*@nyawoobot growls*")
+      other: |
+        I can be in several moods, and I can speak several languages.
+        My native language is Russian, also I know English, but my Ukrainian is not good at all.
+        If you want to help me learn new or improve the level of old languages, please write to @nyawoobot.
+
+        About moods, I have 4 main ones - the usual (nyan), anger, scared and horny ^-^.
+  errors:
+    query: Query returned with error. Query.data = {query}
+    no_rights: You need to be admin, to change this settings.
 roleplay:
   pat: patted
   hug: hugged
+  paw: pawwed
   koos: bited
-  lapk: лапкает
+  lapk: pawwed
   jamk: intensly hugged
   lick: licked
   kiss: kissed
   boop: booped
-
