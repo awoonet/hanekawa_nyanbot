@@ -27,7 +27,10 @@ def config_message(app, msg, user, t):
     text = make_lookup_message(t, user)
 
     if app.is_admin(msg):
-        kb = [["switch.main", "user.main"], ["lang.main", "mood.main", "category.main"]]
+        kb = [
+            ["switch.main", "user.main", "greeter.main"],
+            ["lang.main", "mood.main", "category.main"],
+        ]
     else:
         kb = [["user.main"]]
 
@@ -36,7 +39,7 @@ def config_message(app, msg, user, t):
 
 def help_message(t):
     text = t("config.message.help.initial")
-    kb = [["help.category", "help.roleplay", "help.other"]]
+    kb = [["help.category", "help.roleplay", "help.greeter", "help.other"]]
 
     return (text, kb)
 

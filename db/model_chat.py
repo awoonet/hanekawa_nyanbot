@@ -15,9 +15,17 @@ def generate_chat(db: Database):
         switch = Required(bool, default=True)
         categories = Required(
             Json,
-            default=dict(
-                nyan=True, empathic=True, food=True, greeters=True, memes=True
-            ),
+            default={
+                "nyan": True,
+                "empathic": True,
+                "food": True,
+                "greeters": True,
+                "memes": True,
+            },
+        )
+        greeter = Required(
+            Json,
+            default={"switch": True, "ru": "DEFAULT", "en": "DEFAULT", "ua": "DEFAULT"},
         )
 
         langs = {1: "ru", 2: "en", 3: "ua"}
@@ -78,5 +86,18 @@ def generate_chat(db: Database):
             else:
                 id = str(msg.from_user.id)
             return cls.get(id=id)
+
+        def get_greeter(self):
+            lang = self.get_lang()
+            return self.greeter[lang]
+
+        def set_greeter(self, text):
+            lang = self.get_lang()
+
+            if len(text) > 3686:
+                return False
+
+            self.greeter[lang] = text
+            return True
 
     return Chat

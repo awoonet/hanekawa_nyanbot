@@ -52,6 +52,9 @@ config:
       lang: Language chaged to {answer}.
       mood: Mood changed to {answer}.
       category: Reactions {category} {answer}.
+      greeter: |
+        Greeting changed to:
+        {greeter}
     now:
       lang: At present moment language is {answer}.
       mood: At present moment mood is {answer}.
@@ -81,6 +84,17 @@ config:
 
         There is also a /me command that allows you to simply perform an action on your behalf.
         Let's imagine that your nickname is @nyawoobot. The command "/me growls" will be answered as "*@nyawoobot growls*")
+      greeter: |
+        I can greet new chat users when they come to us.
+        The greeting depends on the language set in the chat.
+        The default greeting is:
+          {default_greeter}
+        And now the chat is set to this greeting:
+          {chat_greeter}
+
+        You can change the greeting with the command `/greeter New greeting text`.
+        In the greeting, you can use `{username}` and `{title}` to insert the username and chat title.
+        If you changed the greeting and then wanted to return it to the default, then change it to "default".
       other: |
         I can be in several moods, and I can speak several languages.
         My native language is Russian, also I know English, but my Ukrainian is not good at all.
@@ -90,6 +104,8 @@ config:
   errors:
     query: Query returned with error. Query.data = {query}
     no_rights: You need to be admin, to change this settings.
+    greeter:
+      too_long: The greeting is too long, it cannot be longer than 3686 characters.
 roleplay:
   pat: patted
   hug: hugged
@@ -100,3 +116,12 @@ roleplay:
   lick: licked
   kiss: kissed
   boop: booped
+greeter: |
+  Hey {username}! Welcome to chat {title}!
+
+  We have a very nice atmosphere and I hope you enjoy it here)
+  If you want, I can give you tea or cookies) And the plaids are in that corner.
+
+  If you are interested, you can write /help, then I will tell you what else I can do)
+
+  Make yourself, cutie :3

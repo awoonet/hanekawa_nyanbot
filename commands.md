@@ -10,3 +10,4 @@ kiss - kiss someone
 boop - boop someone
 help - post help message
 config - configurate bot
+greeter - set new greeter for new members

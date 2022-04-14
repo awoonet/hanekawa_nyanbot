@@ -78,11 +78,14 @@ def parse_query(app, query: CallbackQuery, user):
         return (text, kb)
 
     def help(option):
+        help_types = ["category", "roleplay", "other", "greeter"]
+
         if option == "main":
             return help_message(t)
-        elif option in ("category", "roleplay", "other"):
+        elif option in help_types:
             text = t(f"config.message.help.{option}")
-            kb = [["help.main", "help.category", "help.roleplay", "help.other"]]
+            kb = [[f"help.{i}" for i in help_types if i != option], ["help.main"]]
+
         return (text, kb)
 
     def error_query(_):
